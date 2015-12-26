@@ -1,0 +1,21 @@
+﻿<Window x:Class="FromConvert_VS.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FromConvert_VS"
+        mc:Ignorable="d"
+        Title="格式转换工具" Height="360" Width="250" WindowStartupLocation="CenterScreen" Background="White" ResizeMode="NoResize">
+    <Grid Margin="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="100*"/>
+            <RowDefinition Height="31*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="new_project" Content="新建工程" HorizontalAlignment="Center" Height="50" Margin="0" VerticalAlignment="Center" FontSize="16" Width="120"/>
+        <Button x:Name="output_project" Content="工程导出文件" HorizontalAlignment="Center" Height="50" Margin="0" VerticalAlignment="Center" Width="120" Grid.Row="1" FontSize="16"/>
+        <Button x:Name="exit_button" Content="退出" HorizontalAlignment="Center" Height="50" Margin="0" VerticalAlignment="Center" Width="120" Grid.Row="2" FontSize="16"/>
+    </Grid>
+
+</Window>
