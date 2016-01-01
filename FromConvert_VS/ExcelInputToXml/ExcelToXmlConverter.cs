@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using DigitalMapToDB.DigitalMapParser.Utils;
 
-namespace NpoiTest.ExcelInputToXml
+namespace FromConvert_VS.ExcelInputToXml
 {
     class ExcelToXmlConverter
     {

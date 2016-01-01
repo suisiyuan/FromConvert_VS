@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
 
-namespace NpoiTest.ExcelInputToXml
+namespace FromConvert_VS.ExcelInputToXml
 {
     /// <summary>
     /// ExcelInputToXml.xaml 的交互逻辑

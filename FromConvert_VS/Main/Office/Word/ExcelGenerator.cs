@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using NpoiTest.Model.Database;
+using FromConvert_VS.Model.Database;
 using NPOI.HSSF.Record.CF;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using HorizontalAlignment = NPOI.SS.UserModel.HorizontalAlignment;
 
-namespace NpoiTest.Office.Word
+namespace FromConvert_VS.Office.Word
 {
     /// <summary>
     /// Excel文件输出工具

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using DigitalMapToDB.DigitalMapParser;
 using DigitalMapToDB.DigitalMapParser.Utils;
 
-namespace NpoiTest.DigitalMapDbLib.View
+namespace FromConvert_VS.DigitalMapDbLib.View
 {
     /// <summary>
     ///     MainWindow.xaml 的交互逻辑

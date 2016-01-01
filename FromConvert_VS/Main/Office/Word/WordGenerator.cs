@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using NpoiTest.Model.Database;
+using FromConvert_VS.Model.Database;
 using NPOI.OpenXmlFormats.Dml.Picture;
 using NPOI.XWPF.UserModel;
 using NPOI.OpenXmlFormats.Wordprocessing;
@@ -10,7 +10,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.Data.SQLite;
 using DigitalMapToDB.DigitalMapParser.Utils;
 
-namespace NpoiTest.Office.Word
+namespace FromConvert_VS.Office.Word
 {
     //传入数据---导出一份Word文件
     internal class WordGenerator

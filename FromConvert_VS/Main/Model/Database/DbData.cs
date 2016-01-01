@@ -8,7 +8,7 @@ using DigitalMapToDB.DigitalMapParser.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using NPOI.OpenXmlFormats.Dml;
 
-namespace NpoiTest.Model.Database
+namespace FromConvert_VS.Model.Database
 {
     /// <summary>
     ///     用于存储当前打开的数据库中的一些数据
