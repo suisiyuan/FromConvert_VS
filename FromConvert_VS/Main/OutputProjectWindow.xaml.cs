@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace FromConvert_VS
+namespace FromConvert_VS.Main
 {
     /// <summary>
     /// OutputProjectWindow.xaml 的交互逻辑

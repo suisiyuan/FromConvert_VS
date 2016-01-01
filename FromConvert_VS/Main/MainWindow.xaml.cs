@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 
-namespace FromConvert_VS
+namespace FromConvert_VS.Main
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑

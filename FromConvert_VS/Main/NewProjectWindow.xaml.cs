@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Diagnostics;
 
-namespace FromConvert_VS
+namespace FromConvert_VS.Main
 {
     /// <summary>
     /// NewProjectWindow.xaml 的交互逻辑
@@ -25,20 +25,9 @@ namespace FromConvert_VS
         String projectPath = "", mapPath = "", excelPath = "", kmlPath = "";
 
 
-        //获取工程文件路径
-        private void ProjectPath_button_Click(object sender, RoutedEventArgs e)
-        {
-            SaveFileDialog dialog = new SaveFileDialog();
-            dialog.InitialDirectory = "d:\\";
-            dialog.Filter = "database files (*.db) | *.db";
-            dialog.RestoreDirectory = true;
 
-            //获得工程路径
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) {
-                ProjectPath_textbox.Text = dialog.FileName;
-                projectPath = dialog.FileName;
-            }
-        }
+
+        /****************************** 事件响应 *******************************/
 
         //获取xml文件或者数字地图文件路径
         private void MapPath_button_Click(object sender, RoutedEventArgs e)
@@ -91,25 +80,25 @@ namespace FromConvert_VS
         }
 
 
-
-
         //点击保存工程按钮
         private void save_button_Click(object sender, RoutedEventArgs e)
         {
-            if (ProjectPath_textbox.Text.Length == 0 && MapPath_textBox.Text.Length != 0)
+            if (ProjectName_textbox.Text.Length == 0 && MapPath_textBox.Text.Length != 0)
             {
-                System.Windows.Forms.MessageBox.Show("缺少工程文件路径", "文件不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show("缺少工程文件名", "信息不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else if (ProjectPath_textbox.Text.Length != 0 && MapPath_textBox.Text.Length == 0)
+            else if (ProjectName_textbox.Text.Length != 0 && MapPath_textBox.Text.Length == 0)
             {
-                System.Windows.Forms.MessageBox.Show("缺少铁路信息文件路径", "文件不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show("缺少铁路信息文件", "信息不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else if (ProjectPath_textbox.Text.Length == 0 && MapPath_textBox.Text.Length == 0)
+            else if (ProjectName_textbox.Text.Length == 0 && MapPath_textBox.Text.Length == 0)
             {
-                System.Windows.Forms.MessageBox.Show("缺少工程文件路径和铁路信息文件路径", "文件不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                System.Windows.Forms.MessageBox.Show("缺少工程文件名和铁路信息文件", "信息不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
+                //检查工程文件路径是否合理
+
                 saved = true;
                 this.Close();
             }
@@ -125,12 +114,12 @@ namespace FromConvert_VS
 
 
         //窗口关闭的时候弹出弹窗
-        void Window_Closing(object sender, CancelEventArgs e)
+        private void Window_Closing(object sender, CancelEventArgs e)
         {
             const string message = "文件尚未保存，确认退出？";
             const string caption = "窗口退出";
 
-            if (saved == true || (ProjectPath_textbox.Text.Length == 0 && MapPath_textBox.Text.Length == 0)) ;
+            if (saved == true || (ProjectName_textbox.Text.Length == 0 && MapPath_textBox.Text.Length == 0)) ;
             else
             {
                 System.Windows.Forms.DialogResult result = System.Windows.Forms.MessageBox.Show(message, caption, MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
@@ -143,5 +132,14 @@ namespace FromConvert_VS
 
         }
 
+
+        /****************************** 处理函数 *******************************/
+        Int16 CheckValidation()
+        {
+            Int16 a = 0;
+            
+            
+            return a;
+        }
     }
 }
