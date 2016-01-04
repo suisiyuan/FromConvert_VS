@@ -38,7 +38,6 @@ namespace FromConvert_VS.Main
                 NewProjectWindow new_project = new NewProjectWindow();
                 new_project.ShowDialog();
                 this.ShowDialog();
-
             };
 
             //进入工程导出文件窗口
