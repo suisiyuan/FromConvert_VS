@@ -40,11 +40,11 @@ namespace FromConvert_VS.Main
         }
 
 
-        //获取xml文件或者数字地图文件路径 文件类型为xml文件或者rar文件
+        //获取xml文件或者数字地图文件路径
         private void MapPath_button_Click(object sender, RoutedEventArgs e)
         {
 
-            //CAD文件
+            //CAD文件转换所得xml文件
             if (MapPath_comboBox.SelectedIndex == 0)
             {
                 OpenFileDialog dialog = new OpenFileDialog();
@@ -78,7 +78,7 @@ namespace FromConvert_VS.Main
 
 
 
-        //获取excel文件路径 文件类型为xlsx文件
+        //获取excel文件路径 xlsx文件
         private void ExcelPath_button_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -93,7 +93,7 @@ namespace FromConvert_VS.Main
         }
 
 
-        //获取kml文件路径 文件类型为kml文件
+        //获取kml文件路径 kml文件
         private void KmlPath_button_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -126,7 +126,7 @@ namespace FromConvert_VS.Main
             else
             {
                 SaveFileDialog dialog = new SaveFileDialog(); ;
-                dialog.Filter = "数据库文件 (*.db)|*.db";
+                dialog.Filter = "db文件 (*.db)|*.db";
                 dialog.FilterIndex = 1;
                 dialog.InitialDirectory = "d:\\";
                 dialog.RestoreDirectory = true;
