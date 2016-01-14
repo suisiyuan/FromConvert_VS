@@ -82,31 +82,32 @@ namespace DigitalMapToDB.DigitalMapParser.MapData
         public List<Point> getPointList()
         {
             return pointList;
-        } 
-
-        //getter----and----setter------------------------------
-        public string getNumber()
-        {
-            return number;
         }
 
+        /************************************* 设置、获取数据 ****************************************/
         public void setNumber(string number)
         {
             this.number = number;
-        }
-
-        public string getCode()
-        {
-            return code;
         }
 
         public void setCode(string code)
         {
             this.code = code;
         }
+
         public void setPointList(List<Point> pointList)
         {
             this.pointList = pointList;
+        }
+
+        public string getNumber()
+        {
+            return number;
+        }
+
+        public string getCode()
+        {
+            return code;
         }
 
         public String getContent()

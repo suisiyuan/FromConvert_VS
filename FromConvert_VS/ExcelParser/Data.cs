@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FromConvert_VS.ExcelInputToXml
+namespace FromConvert_VS.ExcelParser
 {
+    //定义数据结构
     class Data
     {
         //设备类型

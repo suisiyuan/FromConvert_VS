@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using DigitalMapToDB.DigitalMapParser.Utils;
 
-namespace FromConvert_VS.ExcelInputToXml
+namespace FromConvert_VS.ExcelParser
 {
     class ExcelToXmlConverter
     {

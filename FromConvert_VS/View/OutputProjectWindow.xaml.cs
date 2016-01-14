@@ -13,16 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.Diagnostics;
-using FromConvert_VS.ExcelInputToXml;
 using FromConvert_VS.Model.Database;
-using FromConvert_VS.Office.Word;
 
 
 
-
-
-
-namespace FromConvert_VS.Main
+namespace FromConvert_VS.View
 {
     /// <summary>
     /// OutputProjectWindow.xaml 的交互逻辑

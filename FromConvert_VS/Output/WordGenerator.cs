@@ -10,7 +10,7 @@ using ICSharpCode.SharpZipLib.Zip;
 using System.Data.SQLite;
 using DigitalMapToDB.DigitalMapParser.Utils;
 
-namespace FromConvert_VS.Office.Word
+namespace FromConvert_VS.Output
 {
     //传入数据---导出一份Word文件
     internal class WordGenerator

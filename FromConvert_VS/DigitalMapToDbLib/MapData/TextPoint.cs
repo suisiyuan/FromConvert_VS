@@ -1,9 +1,9 @@
-﻿using DigitalMapToDB.DigitalMapParser.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DigitalMapToDB.DigitalMapParser.Utils;
 
 namespace DigitalMapToDB.DigitalMapParser.MapData
 {
@@ -24,9 +24,9 @@ namespace DigitalMapToDB.DigitalMapParser.MapData
         /**
          * 构造方法
          *
-         * @param longitude
-         * @param latitude
-         * @param content
+         * @param longitude 大地经度
+         * @param latitude  大地纬度
+         * @param content   文字内容
          */
         public TextPoint(double longitude, double latitude, string content)
         {
@@ -37,30 +37,18 @@ namespace DigitalMapToDB.DigitalMapParser.MapData
             this.content = content;
         }
 
-        /// <summary>
-        /// 返回描述的文字
-        /// </summary>
-        /// <returns></returns>
+        // 返回描述的文字
         public override string ToString()
         {
             return "我的数据是:\t" + latitude + "\t" + longitude + "\t" + content;
         }
 
-        //getter------------and--------------setter
 
-        public double getLongitude()
-        {
-            return longitude;
-        }
 
+        /************************************* 设置、获取数据 ****************************************/
         public void setLongitude(double longitude)
         {
             this.longitude = longitude;
-        }
-
-        public double getLatitude()
-        {
-            return latitude;
         }
 
         public void setLatitude(double latitude)
@@ -68,14 +56,24 @@ namespace DigitalMapToDB.DigitalMapParser.MapData
             this.latitude = latitude;
         }
 
-        public string getContent()
-        {
-            return content;
-        }
-
         public void setContent(string content)
         {
             this.content = content;
+        }
+
+        public double getLongitude()
+        {
+            return longitude;
+        }
+
+        public double getLatitude()
+        {
+            return latitude;
+        }
+
+        public string getContent()
+        {
+            return content;
         }
     }
 }

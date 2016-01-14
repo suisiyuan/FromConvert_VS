@@ -38,16 +38,17 @@ namespace DigitalMapToDB.DigitalMapParser.Utils
         public void generateDbFile(String path)
         {
             Log.Err(TAG, "我开始创建数据库文件");
-            //创建数据库连接---并打开连接
+
+            //创建数据库，并打开连接
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + path);
             connection.Open();
 
-            //创建Table
-            //创建TextPoint表
+            /******************************** 创建table *********************************/
+            //创建TextPoint表和Vector表(包含一个----经纬度----一个点的order)
             SQLiteCommand cmd = connection.CreateCommand();
             cmd.CommandText = "CREATE TABLE TextPoint(longitude REAL, latitude REAL, content TEXT)";
             cmd.ExecuteNonQuery();
-            //创建Vector表表(包含一个----经纬度----一个点的order)
+
             cmd.CommandText =
                 "CREATE TABLE Vector(name TEXT, longitude REAL, latitude REAL, orderInVector INTEGER," +
                 " id INTEGER PRIMARY KEY AUTOINCREMENT)";
@@ -97,6 +98,8 @@ namespace DigitalMapToDB.DigitalMapParser.Utils
             //释放资源
             cmd.Dispose();
             connection.Close();
+
+
             MessageBox.Show("文件生成成功", "提示");
         }
     }

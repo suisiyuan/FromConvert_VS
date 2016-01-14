@@ -7,7 +7,7 @@ using System.Diagnostics;
 using DigitalMapToDB.DigitalMapParser;
 using DigitalMapToDB.DigitalMapParser.Utils;
 
-namespace FromConvert_VS.Main
+namespace FromConvert_VS.View
 {
     /// <summary>
     /// NewProjectWindow.xaml 的交互逻辑
@@ -185,9 +185,6 @@ namespace FromConvert_VS.Main
             }
 
         }
-
-
-        /*************************************** 数据处理函数 ***************************************/
 
 
     }
