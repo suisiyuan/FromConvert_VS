@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
 using System.Windows;
-using DigitalMapToDB.DigitalMapParser.Utils;
+using FromConvert_VS.DigitalMapParser.Utils;
 using ICSharpCode.SharpZipLib.Zip;
 using NPOI.OpenXmlFormats.Dml;
 
-namespace FromConvert_VS.Model.Database
+namespace FromConvert_VS.Database
 {
     /// <summary>
     ///     用于存储当前打开的数据库中的一些数据

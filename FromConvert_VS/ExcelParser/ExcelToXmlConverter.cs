@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using DigitalMapToDB.DigitalMapParser.Utils;
+using FromConvert_VS.DigitalMapParser.Utils;
 
 namespace FromConvert_VS.ExcelParser
 {

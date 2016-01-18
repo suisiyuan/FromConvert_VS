@@ -138,19 +138,19 @@
     </Compile>
     <Compile Include="Database\DbBean.cs" />
     <Compile Include="Database\DbData.cs" />
-    <Compile Include="DigitalMapToDbLib\MapData\Point.cs" />
-    <Compile Include="DigitalMapToDbLib\MapData\TextPoint.cs" />
-    <Compile Include="DigitalMapToDbLib\MapData\Vector.cs" />
-    <Compile Include="DigitalMapToDbLib\Parser\TextParser.cs" />
-    <Compile Include="DigitalMapToDbLib\Parser\VectorParser.cs" />
-    <Compile Include="DigitalMapToDbLib\PrjConstant.cs" />
-    <Compile Include="DigitalMapToDbLib\PrjItem.cs" />
-    <Compile Include="DigitalMapToDbLib\Utils\CoordinateConverter.cs" />
-    <Compile Include="DigitalMapToDbLib\Utils\DbHelper.cs" />
-    <Compile Include="DigitalMapToDbLib\Utils\Log.cs" />
+    <Compile Include="DigitalMapParser\MapData\Point.cs" />
+    <Compile Include="DigitalMapParser\MapData\TextPoint.cs" />
+    <Compile Include="DigitalMapParser\MapData\Vector.cs" />
+    <Compile Include="DigitalMapParser\Parser\TextParser.cs" />
+    <Compile Include="DigitalMapParser\Parser\VectorParser.cs" />
+    <Compile Include="DigitalMapParser\PrjConstant.cs" />
+    <Compile Include="DigitalMapParser\PrjItem.cs" />
+    <Compile Include="DigitalMapParser\Utils\CoordinateConverter.cs" />
+    <Compile Include="DigitalMapParser\Utils\DbHelper.cs" />
+    <Compile Include="DigitalMapParser\Utils\Log.cs" />
     <Compile Include="ExcelParser\Data.cs" />
     <Compile Include="ExcelParser\ExcelToXmlConverter.cs" />
-    <Compile Include="KmlParser\data.cs" />
+    <Compile Include="KmlParser\Data.cs" />
     <Compile Include="KmlParser\Program.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

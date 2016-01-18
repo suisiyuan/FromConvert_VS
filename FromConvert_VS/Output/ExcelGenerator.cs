@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using FromConvert_VS.Model.Database;
+using FromConvert_VS.Database;
 using NPOI.HSSF.Record.CF;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
@@ -18,7 +18,7 @@ namespace FromConvert_VS.Output
         /// <summary>
         /// 数据源
         /// </summary>
-        private readonly List<Model.Database.DbBean> dataList;
+        private readonly List<Database.DbBean> dataList;
 
         /// <summary>
         /// Excel输出路径
@@ -30,7 +30,7 @@ namespace FromConvert_VS.Output
         /// </summary>
         /// <param name="dataList">需要导出的数据</param>
         /// <param name="outputPath">输出路径</param>
-        public ExcelGenerator(List<Model.Database.DbBean> dataList, string outputPath)
+        public ExcelGenerator(List<Database.DbBean> dataList, string outputPath)
         {
             this.dataList = dataList;
             this.outputPath = outputPath;
@@ -121,7 +121,7 @@ namespace FromConvert_VS.Output
             for (var i = 1; i <= dataList.Count; i++)
             {
                 var row = (HSSFRow) sheet.GetRow(i);
-                Model.Database.DbBean dbBean = dataList[i - 1];
+                Database.DbBean dbBean = dataList[i - 1];
                 //序号
                 ICell cell0 = row.CreateCell(0);
                 cell0.SetCellValue(i);

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DigitalMapToDB.DigitalMapParser.Utils
+namespace FromConvert_VS.DigitalMapParser.Utils
 {
     internal class Log
     {

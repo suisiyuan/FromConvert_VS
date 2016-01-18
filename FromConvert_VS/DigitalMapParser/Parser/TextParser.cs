@@ -1,13 +1,13 @@
-﻿using DigitalMapToDB.DigitalMapParser.MapData;
+﻿using FromConvert_VS.DigitalMapParser.MapData;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DigitalMapToDB.DigitalMapParser.Utils;
+using FromConvert_VS.DigitalMapParser.Utils;
 
-namespace DigitalMapToDB.DigitalMapParser.Parser
+namespace FromConvert_VS.DigitalMapParser.Parser
 {
     internal class TextParser
     {

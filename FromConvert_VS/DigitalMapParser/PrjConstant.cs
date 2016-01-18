@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 
 
-namespace DigitalMapToDB.DigitalMapParser
+namespace FromConvert_VS.DigitalMapParser
 {
     internal class PrjConstant
     {

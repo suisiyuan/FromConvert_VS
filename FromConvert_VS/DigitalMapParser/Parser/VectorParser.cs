@@ -1,5 +1,5 @@
-﻿using DigitalMapToDB.DigitalMapParser.MapData;
-using DigitalMapToDB.DigitalMapParser.Utils;
+﻿using FromConvert_VS.DigitalMapParser.MapData;
+using FromConvert_VS.DigitalMapParser.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace DigitalMapToDB.DigitalMapParser.Parser
+namespace FromConvert_VS.DigitalMapParser.Parser
 {
     internal class VectorParser
     {

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.Diagnostics;
-using FromConvert_VS.Model.Database;
+using FromConvert_VS.Database;
 
 
 

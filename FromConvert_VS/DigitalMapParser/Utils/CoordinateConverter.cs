@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DigitalMapToDB.DigitalMapParser.Utils
+namespace FromConvert_VS.DigitalMapParser.Utils
 {
     /// <summary>
     /// 工具类:

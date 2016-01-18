@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DigitalMapToDB.DigitalMapParser.Utils;
+using FromConvert_VS.DigitalMapParser.Utils;
 
-namespace DigitalMapToDB.DigitalMapParser.MapData
+namespace FromConvert_VS.DigitalMapParser.MapData
 {
     class TextPoint
     {

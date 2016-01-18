@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using FromConvert_VS.Model.Database;
+using FromConvert_VS.Database;
 using NPOI.OpenXmlFormats.Dml.Picture;
 using NPOI.XWPF.UserModel;
 using NPOI.OpenXmlFormats.Wordprocessing;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Data.SQLite;
-using DigitalMapToDB.DigitalMapParser.Utils;
+using FromConvert_VS.DigitalMapParser.Utils;
 
 namespace FromConvert_VS.Output
 {

@@ -4,8 +4,8 @@ using System.Windows;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Diagnostics;
-using DigitalMapToDB.DigitalMapParser;
-using DigitalMapToDB.DigitalMapParser.Utils;
+using FromConvert_VS.DigitalMapParser;
+using FromConvert_VS.DigitalMapParser.Utils;
 
 namespace FromConvert_VS.View
 {

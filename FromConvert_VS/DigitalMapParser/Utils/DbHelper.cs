@@ -1,4 +1,4 @@
-﻿using DigitalMapToDB.DigitalMapParser.MapData;
+﻿using FromConvert_VS.DigitalMapParser.MapData;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.SqlServer.Server;
-using Point = DigitalMapToDB.DigitalMapParser.MapData.Point;
-using Vector = DigitalMapToDB.DigitalMapParser.MapData.Vector;
+using Point = FromConvert_VS.DigitalMapParser.MapData.Point;
+using Vector = FromConvert_VS.DigitalMapParser.MapData.Vector;
 using System.Data.Common;
 
-namespace DigitalMapToDB.DigitalMapParser.Utils
+namespace FromConvert_VS.DigitalMapParser.Utils
 {
     internal class DbHelper
     {

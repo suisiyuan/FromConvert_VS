@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DigitalMapToDB.DigitalMapParser.Utils;
-using DigitalMapToDB.DigitalMapParser.Parser;
+using FromConvert_VS.DigitalMapParser.Utils;
+using FromConvert_VS.DigitalMapParser.Parser;
 using NPOI.Util;
 
-namespace DigitalMapToDB.DigitalMapParser
+namespace FromConvert_VS.DigitalMapParser
 {
     internal class PrjItem
     {
