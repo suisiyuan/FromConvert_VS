@@ -1,5 +1,4 @@
-﻿using FromConvert_VS.DigitalMapParser.MapData;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
@@ -9,13 +8,14 @@ using System.Windows;
 using Microsoft.SqlServer.Server;
 using Point = FromConvert_VS.DigitalMapParser.MapData.Point;
 using Vector = FromConvert_VS.DigitalMapParser.MapData.Vector;
+using FromConvert_VS.DigitalMapParser.MapData;
 using System.Data.Common;
 
 namespace FromConvert_VS.DigitalMapParser.Utils
 {
     internal class DbHelper
     {
-        private const string TAG = "DBHelper";
+        
 
         /// <summary>
         /// 包含一个数字地图的所有数据
@@ -37,22 +37,15 @@ namespace FromConvert_VS.DigitalMapParser.Utils
         /// <param name="path"></param>
         public void generateDbFile(String path)
         {
-            Log.Err(TAG, "我开始创建数据库文件");
-
             //创建数据库，并打开连接
             SQLiteConnection connection = new SQLiteConnection("Data Source=" + path);
             connection.Open();
 
             /******************************** 创建table *********************************/
-            //创建TextPoint表和Vector表(包含一个----经纬度----一个点的order)
+            //按照最新标准建立数据库
             SQLiteCommand cmd = connection.CreateCommand();
-            cmd.CommandText = "CREATE TABLE TextPoint(longitude REAL, latitude REAL, content TEXT)";
-            cmd.ExecuteNonQuery();
 
-            cmd.CommandText =
-                "CREATE TABLE Vector(name TEXT, longitude REAL, latitude REAL, orderInVector INTEGER," +
-                " id INTEGER PRIMARY KEY AUTOINCREMENT)";
-            cmd.ExecuteNonQuery();
+           
 
             //尝试使用事物进行数据库操作
             DbTransaction trans = connection.BeginTransaction();
@@ -69,6 +62,7 @@ namespace FromConvert_VS.DigitalMapParser.Utils
                                       + ")";
                     cmd.ExecuteNonQuery();
                 }
+
                 //将Vector中的数据写进去
                 foreach (Vector vector in prjItem.getVectorParser().getVectorList())
                 {
@@ -88,7 +82,7 @@ namespace FromConvert_VS.DigitalMapParser.Utils
                     }
                 }
                 //提交事务
-                trans.Commit(); 
+                trans.Commit();
             }
             catch (Exception e)
             {
@@ -98,6 +92,7 @@ namespace FromConvert_VS.DigitalMapParser.Utils
             //释放资源
             cmd.Dispose();
             connection.Close();
+
 
 
             MessageBox.Show("文件生成成功", "提示");

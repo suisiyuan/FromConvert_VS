@@ -5,7 +5,11 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Diagnostics;
 using FromConvert_VS.DigitalMapParser;
-using FromConvert_VS.DigitalMapParser.Utils;
+using FromConvert_VS.Database;
+using FromConvert_VS.KmlParser;
+using FromConvert_VS.ExcelParser;
+using FromConvert_VS.CadXmlParser;
+
 
 namespace FromConvert_VS.View
 {
@@ -15,15 +19,24 @@ namespace FromConvert_VS.View
     public partial class NewProjectWindow : Window
     {
         
-        //是否已经保存
         Boolean saved = false;
-
-        //路径字符串
         String projectName = "", mapPath = "", excelPath = "", kmlPath = "", outputPath = "";
 
         //数据管理类
         private PrjItem prjItem;
-        private DbHelper dbHelper;
+
+        //xml文件操作类
+        private KmlFile kmlFile;
+
+        //excel文件操作类
+        private ExcelFile excelFile;
+
+        //CAD xml 文件操作类
+        private CadXmlFile cadXmlFile;
+
+
+        //数据库文件类
+        private DatabaseFile databaseFile;
 
 
         //构造方法
@@ -55,6 +68,7 @@ namespace FromConvert_VS.View
                 {
                     MapPath_textBox.Text = dialog.FileName;
                     mapPath = dialog.FileName;
+                    cadXmlFile = new CadXmlFile(mapPath);
                 }
             }
             //数字地图
@@ -69,6 +83,7 @@ namespace FromConvert_VS.View
                         System.Windows.MessageBox.Show("当前路径不符合数字地图文件要求", "错误");
                         return;
                     }
+                    prjItem = new PrjItem(path);
                     //获取选中的文件夹
                     this.MapPath_textBox.Text = dialog.SelectedPath;
                     mapPath = dialog.SelectedPath;
@@ -89,6 +104,7 @@ namespace FromConvert_VS.View
             {
                 ExcelPath_textBox.Text = dialog.FileName;
                 excelPath = dialog.FileName;
+                excelFile = new ExcelFile(excelPath);
             }
         }
 
@@ -104,7 +120,9 @@ namespace FromConvert_VS.View
             {
                 KmlPath_textBox.Text = dialog.FileName;
                 kmlPath = dialog.FileName;
+                kmlFile = new KmlFile(kmlPath);
             }
+
         }
 
 
@@ -136,30 +154,51 @@ namespace FromConvert_VS.View
                     outputPath = dialog.FileName;
                 }
 
-                //CAD文件
-                if (MapPath_comboBox.SelectedIndex == 0)
-                {
+                databaseFile = new DatabaseFile(outputPath);
+                SaveProject();
 
-                }
-                //数字地图
-                else if (MapPath_comboBox.SelectedIndex == 1)
-                {
-                    if (prjItem == null)
-                    {
-                        prjItem = new PrjItem(mapPath);
-                    }
-                    if (dbHelper == null)
-                    {
-                        dbHelper = new DbHelper(prjItem);
-                    }
-                    dbHelper.generateDbFile(outputPath);
-                }
 
                 saved = true;
                 this.Close();
             }
         }
 
+
+        //根据提供的信息向数据库写数据
+        private void SaveProject()
+        {
+            //CAD文件
+            if (MapPath_comboBox.SelectedIndex == 0)
+            {
+                databaseFile.WriteProjectInfo(0, projectName, "");
+                databaseFile.WriteCadMap(cadXmlFile);
+            }
+            //数字地图
+            else if (MapPath_comboBox.SelectedIndex == 1)
+            {                
+                databaseFile.WriteProjectInfo(1, projectName, "");
+                databaseFile.WriteDigitalMap(prjItem);
+            }
+
+            //如果有kml文件
+            if (kmlFile != null)
+            {
+                databaseFile.WriteKml(kmlFile);
+            }
+
+            //如果有excel文件
+            if (excelFile != null)
+            {
+                databaseFile.WriteExcel(excelFile);
+            }
+
+            System.Windows.MessageBox.Show("文件生成成功", "提示");
+        }
+
+
+
+
+        /*************************************** 窗口关闭相关函数 ***************************************/
         //点击返回主菜单按钮 直接close窗口
         private void exit_button_Click(object sender, RoutedEventArgs e)
         {
@@ -183,7 +222,6 @@ namespace FromConvert_VS.View
                     e.Cancel = true;
                 }
             }
-
         }
 
 

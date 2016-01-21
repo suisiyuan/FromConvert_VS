@@ -136,6 +136,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CadXmlParser\CadXmlFile.cs" />
+    <Compile Include="CadXmlParser\CircleData.cs" />
+    <Compile Include="CadXmlParser\LineData.cs" />
+    <Compile Include="CadXmlParser\P2DPolyData.cs" />
+    <Compile Include="CadXmlParser\PolyData.cs" />
+    <Compile Include="CadXmlParser\TextData.cs" />
+    <Compile Include="Common\Coordinate.cs" />
+    <Compile Include="Database\DatabaseFile.cs" />
     <Compile Include="Database\DbBean.cs" />
     <Compile Include="Database\DbData.cs" />
     <Compile Include="DigitalMapParser\MapData\Point.cs" />
@@ -148,10 +156,11 @@
     <Compile Include="DigitalMapParser\Utils\CoordinateConverter.cs" />
     <Compile Include="DigitalMapParser\Utils\DbHelper.cs" />
     <Compile Include="DigitalMapParser\Utils\Log.cs" />
-    <Compile Include="ExcelParser\Data.cs" />
-    <Compile Include="ExcelParser\ExcelToXmlConverter.cs" />
-    <Compile Include="KmlParser\Data.cs" />
-    <Compile Include="KmlParser\Program.cs" />
+    <Compile Include="ExcelParser\ExcelData.cs" />
+    <Compile Include="ExcelParser\ExcelFile.cs" />
+    <Compile Include="KmlParser\DotData.cs" />
+    <Compile Include="KmlParser\PolyData.cs" />
+    <Compile Include="KmlParser\KmlFile.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
