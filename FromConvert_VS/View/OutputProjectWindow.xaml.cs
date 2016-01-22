@@ -13,8 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.Diagnostics;
+using FromConvert_VS.Output;
 using FromConvert_VS.Database;
-
 
 
 namespace FromConvert_VS.View
@@ -24,14 +24,11 @@ namespace FromConvert_VS.View
     /// </summary>
     public partial class OutputProjectWindow : Window
     {
-        //数据库数据
-        private DbData daData;
-
-
         //文件路径字符串
         String projectPath = "", wordPath = "", excelPath = "";
         String projectName = "", projectFolder = "";
 
+        DatabaseFile databaseFile;
 
         public OutputProjectWindow()
         {
@@ -62,6 +59,9 @@ namespace FromConvert_VS.View
                 {
                     projectFolder = projectFolder + "\\" + sArray[i];
                 }
+
+                databaseFile = new DatabaseFile(projectPath);
+
             }
 
         }
@@ -102,7 +102,29 @@ namespace FromConvert_VS.View
         //输出word、excel文件
         private void output_button_Click(object sender, RoutedEventArgs e)
         {
+            //判断是否有数据库文件
+            if (databaseFile == null)
+            {
+                System.Windows.Forms.MessageBox.Show("请指定数据库文件路径", "信息不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                databaseFile.ReadDbFile();
+            }
             
+            //判断是否指定excel文件输出路径
+            if (excelPath.Length != 0)
+            {
+                new ExcelGenerator(databaseFile.OutputDataList, excelPath).Generate();
+            }
+
+            //判断是否指定word文件输出路径
+            if (wordPath.Length != 0)
+            {
+                WordGenerator.word_creat_one(databaseFile.OutputDataList, wordPath);
+            }
+                      
+            this.Close();
         }
 
         //退出界面

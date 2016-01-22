@@ -15,6 +15,7 @@ using FromConvert_VS.KmlParser;
 using FromConvert_VS.ExcelParser;
 using FromConvert_VS.CadXmlParser;
 using FromConvert_VS.Common;
+using FromConvert_VS.Output;
 using System.Diagnostics;
 
 namespace FromConvert_VS.Database
@@ -28,13 +29,34 @@ namespace FromConvert_VS.Database
         private SQLiteConnection dbFileConnection;
         private SQLiteCommand cmd;
         private DbTransaction trans;
+        SQLiteDataReader reader;
+
+        private List<OutputData> outputDataList = new List<OutputData>();
+        internal List<OutputData> OutputDataList
+        {
+            get
+            {
+                return outputDataList;
+            }
+
+            set
+            {
+                outputDataList = value;
+            }
+        }
+
+
 
         //构造函数 按照格式建立数据库
         public DatabaseFile(String prjPath)
         {
             //赋予数据库文件路径
-            this.prjPath = prjPath;
+            this.prjPath = prjPath;            
+        }
 
+        //初始化数据库按文件格式
+        public void InitDbFile()
+        {
             //新建数据库连接 初始化数据库命令变量
             dbFileConnection = new SQLiteConnection("Data Source=" + prjPath);
             dbFileConnection.Open();
@@ -82,7 +104,7 @@ namespace FromConvert_VS.Database
         }
 
         //写入工程信息
-        public void WriteProjectInfo(Int16 mapInfo, String prjName, String content)
+        public void WriteProjectInfo(Int16 mapInfo, String prjName)
         {
             dbFileConnection.Open();
             cmd = dbFileConnection.CreateCommand();
@@ -94,7 +116,7 @@ namespace FromConvert_VS.Database
                                   "("
                                   + "'" + mapInfo + "', "
                                   + "'" + prjName + "', "
-                                  + "'" + content + "'"
+                                  + "'" + DateTime.Now.ToString() + "'"
                                   + ")";
                 cmd.ExecuteNonQuery();
                 trans.Commit();
@@ -107,7 +129,6 @@ namespace FromConvert_VS.Database
             cmd.Dispose();
             dbFileConnection.Close();
         }
-
 
         //写入数字地图的信息
         public void WriteDigitalMap(PrjItem prjItem)
@@ -167,7 +188,6 @@ namespace FromConvert_VS.Database
             cmd.Dispose();
             dbFileConnection.Close();
         }
-
 
         //写入CAD地图信息
         public void WriteCadMap(CadXmlFile cadXmlFile)
@@ -364,6 +384,49 @@ namespace FromConvert_VS.Database
             cmd.Dispose();
             dbFileConnection.Close();
         }
+
+
+        //读取数据库文件 获取导出word和excel所需信息
+        public void ReadDbFile()
+        {
+            dbFileConnection = new SQLiteConnection("Data Source=" + prjPath);
+            dbFileConnection.Open();
+            cmd = dbFileConnection.CreateCommand();
+
+            //获取工程名
+            cmd.CommandText = "SELECT * FROM ProjectInfo";
+            reader = cmd.ExecuteReader();
+            String prjName = reader["prjName"] + "";
+            reader.Close();
+
+            //获取基站信息
+            cmd.CommandText = "SELECT * FROM BaseStation";
+            reader = cmd.ExecuteReader();
+
+            //将基站信息
+            while (reader.Read())
+            {
+                OutputData outputData = new OutputData();
+                outputData.PrjName = prjName;
+                outputData.Longitude = reader["longitude"] + "";
+                outputData.Latitude = reader["latitude"] + "";
+                outputData.DeviceType = reader["device_type"] + "";
+                outputData.KilometerMark = reader["kilometer_mark"] + "";
+                outputData.SideDirection = reader["side_direction"] + "";
+                outputData.DistanceToRail = reader["distance_to_rail"] + "";
+                outputData.Comment = reader["comment"] + "";
+                outputData.TowerType = reader["tower_type"] + "";
+                outputData.TowerHeight = reader["tower_height"] + "";
+                outputData.AntennaDirection1 = reader["antenna_direction_1"] + "";
+                outputData.AntennaDirection2 = reader["antenna_direction_2"] + "";
+                outputData.AntennaDirection3 = reader["antenna_direction_3"] + "";
+                outputData.AntennaDirection4 = reader["antenna_direction_4"] + "";
+                outputData.PhotoPathName = "";
+                OutputDataList.Add(outputData);
+            }
+
+        }
+
 
     }
 }

@@ -155,6 +155,7 @@ namespace FromConvert_VS.View
                 }
 
                 databaseFile = new DatabaseFile(outputPath);
+                databaseFile.InitDbFile();
                 SaveProject();
 
 
@@ -170,13 +171,13 @@ namespace FromConvert_VS.View
             //CAD文件
             if (MapPath_comboBox.SelectedIndex == 0)
             {
-                databaseFile.WriteProjectInfo(0, projectName, "");
+                databaseFile.WriteProjectInfo(0, projectName);
                 databaseFile.WriteCadMap(cadXmlFile);
             }
             //数字地图
             else if (MapPath_comboBox.SelectedIndex == 1)
             {                
-                databaseFile.WriteProjectInfo(1, projectName, "");
+                databaseFile.WriteProjectInfo(1, projectName);
                 databaseFile.WriteDigitalMap(prjItem);
             }
 

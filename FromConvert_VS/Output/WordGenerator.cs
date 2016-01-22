@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using FromConvert_VS.Database;
 using NPOI.OpenXmlFormats.Dml.Picture;
 using NPOI.XWPF.UserModel;
 using NPOI.OpenXmlFormats.Wordprocessing;
@@ -18,11 +17,6 @@ namespace FromConvert_VS.Output
         private const string TAG = "WordGenerator";
 
         /// <summary>
-        /// 数据源
-        /// </summary>
-        private readonly List<DbBean> dataList;
-
-        /// <summary>
         /// 禁止创建实例
         /// </summary>
         private WordGenerator()
@@ -34,7 +28,7 @@ namespace FromConvert_VS.Output
         /// </summary>
         /// <param name="datalist">当前工程的数据List</param>
         /// <param name="outputPath">word文件输出路径</param>
-        public static void word_creat_one(List<DbBean> datalist, string outputPath)
+        public static void word_creat_one(List<OutputData> datalist, string outputPath)
         {
             XWPFDocument m_Docx = new XWPFDocument();
             word_init(m_Docx);
@@ -42,8 +36,8 @@ namespace FromConvert_VS.Output
             for (int i = 0; i < datalist.Count; i++)
             {
                 word_inster_table(m_Docx, datalist[i], i + 1);
-                //TODO 此处插入图片
-                word_insert_picture(m_Docx, datalist[i].PrjName, datalist[i].PhotoPathName);
+                //word_insert_picture(m_Docx, datalist[i].PrjName, datalist[i].PhotoPathName);
+                word_insert_picture(m_Docx, "D:\\photo");
             }
             //输出
             FileStream sw = null;
@@ -120,13 +114,14 @@ namespace FromConvert_VS.Output
             word_insert_text(m_Docx, "宋体", 12, "基站勘察表");
         }
 
+
+
         /*
          *插入空行函数
          *@n 插入的行数
          *@m_Docx 根文档
          *@longth 空行高
          */
-
         private static void word_insert_space(int n, XWPFDocument m_Docx, int longth = 250)
         {
             for (int i = 0; i < n; i++)
@@ -146,8 +141,7 @@ namespace FromConvert_VS.Output
         /// <param name="size"></param>
         /// <param name="text"></param>
         /// <param name="position"></param>
-        private static void word_insert_text(XWPFDocument m_Docx, string Font, int size, string text,
-            ParagraphAlignment position = ParagraphAlignment.CENTER)
+        private static void word_insert_text(XWPFDocument m_Docx, string Font, int size, string text, ParagraphAlignment position = ParagraphAlignment.CENTER)
         {
             XWPFParagraph gp = m_Docx.CreateParagraph(); //创建XWPFParagraph
             gp.SetAlignment(position);
@@ -166,7 +160,7 @@ namespace FromConvert_VS.Output
         /// <param name="side_direction">下行侧向</param>
         /// <param name="longitude">经度</param>
         /// <param name="latitude">纬度</param>
-        private static void word_inster_table(XWPFDocument m_Docx, DbBean bean, int i = 1)
+        private static void word_inster_table(XWPFDocument m_Docx, OutputData bean, int i = 1)
         {
             XWPFTable table = m_Docx.CreateTable(12, 2);
             CT_Tbl ctbl = m_Docx.Document.body.GetTblArray()[i];
@@ -221,24 +215,20 @@ namespace FromConvert_VS.Output
         /// <summary>
         /// word文档插入图片
         /// </summary>
-        private static void word_insert_picture(XWPFDocument m_Docx, string prjName, string photoPathName)
+        private static void word_insert_picture(XWPFDocument m_Docx, string photoPathName)
         {
-            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(".\\Picture\\" + prjName + "\\" + photoPathName);
-            if (dir.Exists == false)
-            {
-                Log.Err(TAG, "路径不存在");
-                return;
-            }
-            System.IO.FileInfo[] files = dir.GetFiles(); // 获取所有文件信息。。
+            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(photoPathName);   //存储照片的路径
+            System.IO.FileInfo[] files = dir.GetFiles();                                //获取所有文件信息
+
             foreach (System.IO.FileInfo file in files)
             {
-                FileStream gfs = new FileStream(".\\Picture\\" + prjName + "\\" + photoPathName + "\\" + file.Name,
-                    FileMode.Open, FileAccess.Read);
+                FileStream gfs = new FileStream(photoPathName + "\\" + file.Name, FileMode.Open, FileAccess.Read);
                 XWPFParagraph gp = m_Docx.CreateParagraph(); //创建XWPFParagraph
                 gp.SetAlignment(ParagraphAlignment.CENTER);
                 XWPFRun gr = gp.CreateRun();
+
                 //添加图片（注意设置图片的大小） 默认最小的一边为1000000
-                System.Drawing.Image image = System.Drawing.Image.FromFile(".\\Picture\\" + prjName + "\\" + photoPathName + "\\" + file.Name);
+                System.Drawing.Image image = System.Drawing.Image.FromFile(photoPathName + "\\" + file.Name);
                 int height, width;
                 if (image.Height > image.Width)
                 {

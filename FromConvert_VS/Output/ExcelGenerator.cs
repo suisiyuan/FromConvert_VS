@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using FromConvert_VS.Database;
 using NPOI.HSSF.Record.CF;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
@@ -18,7 +17,7 @@ namespace FromConvert_VS.Output
         /// <summary>
         /// 数据源
         /// </summary>
-        private readonly List<Database.DbBean> dataList;
+        private readonly List<OutputData> dataList;
 
         /// <summary>
         /// Excel输出路径
@@ -30,14 +29,14 @@ namespace FromConvert_VS.Output
         /// </summary>
         /// <param name="dataList">需要导出的数据</param>
         /// <param name="outputPath">输出路径</param>
-        public ExcelGenerator(List<Database.DbBean> dataList, string outputPath)
+        public ExcelGenerator(List<OutputData> dataList, string outputPath)
         {
             this.dataList = dataList;
             this.outputPath = outputPath;
         }
 
         /// <summary>
-        ///     导出WOrd文件
+        ///     导出Word文件
         /// </summary>
         public void Generate()
         {
@@ -121,7 +120,7 @@ namespace FromConvert_VS.Output
             for (var i = 1; i <= dataList.Count; i++)
             {
                 var row = (HSSFRow) sheet.GetRow(i);
-                Database.DbBean dbBean = dataList[i - 1];
+                OutputData OutputData = dataList[i - 1];
                 //序号
                 ICell cell0 = row.CreateCell(0);
                 cell0.SetCellValue(i);
@@ -129,58 +128,58 @@ namespace FromConvert_VS.Output
                 InitDataCellStyle(workbook, cell0);
                 //设备类型
                 cell0 = row.CreateCell(1);
-                cell0.SetCellValue(dbBean.DeviceType);
+                cell0.SetCellValue(OutputData.DeviceType);
                 cell0.CellStyle.ShrinkToFit = true;
                 InitDataCellStyle(workbook, cell0);
                 //公里标
                 cell0 = row.CreateCell(2);
-                cell0.SetCellValue(dbBean.KilometerMark);
+                cell0.SetCellValue(OutputData.KilometerMark);
                 cell0.CellStyle.ShrinkToFit = true;
                 InitDataCellStyle(workbook, cell0);
                 //侧向
                 cell0 = row.CreateCell(3);
-                cell0.SetCellValue(dbBean.SideDirection);
+                cell0.SetCellValue(OutputData.SideDirection);
                 cell0.CellStyle.ShrinkToFit = true;
                 InitDataCellStyle(workbook, cell0);
                 //距线路中心距离
                 cell0 = row.CreateCell(4);
-                cell0.SetCellValue(dbBean.DistanceToRail);
+                cell0.SetCellValue(OutputData.DistanceToRail);
                 cell0.CellStyle.ShrinkToFit = true;
                 InitDataCellStyle(workbook, cell0);
                 //经度
                 double temp;
-                if (double.TryParse(dbBean.Longitude, out temp))
+                if (double.TryParse(OutputData.Longitude, out temp))
                 {
                     cell0 = row.CreateCell(5);
-                    cell0.SetCellValue(Double.Parse((dbBean.Longitude)));
+                    cell0.SetCellValue(Double.Parse((OutputData.Longitude)));
                     cell0.CellStyle.ShrinkToFit = true;
                     InitDataCellNumStyle(workbook, cell0);
                 }
                 else
                 {
                     cell0 = row.CreateCell(5);
-                    cell0.SetCellValue((dbBean.Longitude));
+                    cell0.SetCellValue((OutputData.Longitude));
                     cell0.CellStyle.ShrinkToFit = true;
                     InitDataCellNumStyle(workbook, cell0);
                 }
                 //纬度
-                if (double.TryParse(dbBean.Latitude, out temp))
+                if (double.TryParse(OutputData.Latitude, out temp))
                 {
                     cell0 = row.CreateCell(6);
-                    cell0.SetCellValue(double.Parse(dbBean.Latitude));
+                    cell0.SetCellValue(double.Parse(OutputData.Latitude));
                     cell0.CellStyle.ShrinkToFit = true;
                     InitDataCellNumStyle(workbook, cell0);
                 }
                 else
                 {
                     cell0 = row.CreateCell(6);
-                    cell0.SetCellValue(dbBean.Latitude);
+                    cell0.SetCellValue(OutputData.Latitude);
                     cell0.CellStyle.ShrinkToFit = true;
                     InitDataCellNumStyle(workbook, cell0);
                 }
                 //备注文本
                 cell0 = row.CreateCell(7);
-                cell0.SetCellValue(dbBean.Comment);
+                cell0.SetCellValue(OutputData.Comment);
                 cell0.CellStyle.ShrinkToFit = true;
                 InitDataCellStyle(workbook, cell0);
             }
