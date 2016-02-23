@@ -60,8 +60,14 @@ namespace FromConvert_VS.View
                     projectFolder = projectFolder + "\\" + sArray[i];
                 }
 
-                databaseFile = new DatabaseFile(projectPath);
+                this.WordPath_textBox.Text = "";
+                this.ExcelPath_textBox.Text = "";
 
+                this.WordPath_button.IsEnabled = true;
+                this.ExcelPath_button.IsEnabled = true;
+
+                //根据数据库文件文件路径新建类                
+                databaseFile = new DatabaseFile(projectPath);
             }
 
         }
@@ -86,7 +92,7 @@ namespace FromConvert_VS.View
         private void ExcelPath_button_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog(); ;
-            dialog.Filter = "excel文件 (*.xlsx)|*.xlsx";
+            dialog.Filter = "excel文件 (*.xls)|*.xls";
             dialog.FilterIndex = 1;
             dialog.InitialDirectory = projectFolder;
             dialog.RestoreDirectory = true;
@@ -99,7 +105,12 @@ namespace FromConvert_VS.View
         }
 
 
-        //输出word、excel文件
+
+
+
+
+
+        //输出文件按钮 输出word、excel文件
         private void output_button_Click(object sender, RoutedEventArgs e)
         {
             //判断是否有数据库文件
@@ -127,7 +138,10 @@ namespace FromConvert_VS.View
             this.Close();
         }
 
-        //退出界面
+
+
+
+        //返回主菜单按钮 退出界面
         private void exit_button_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

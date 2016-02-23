@@ -35,7 +35,7 @@
                 </Grid.ColumnDefinitions>
                 <Label x:Name="WordPath_label" Content="Word输出路径：" Margin="10,29" FontSize="16" Width="120" Height="30"/>
                 <TextBox x:Name="WordPath_textBox" Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="" FontSize="16" Height="30" IsEnabled="False"/>
-                <Button x:Name="WordPath_button" Content="..." Grid.Column="2" Margin="0,3,0,0" Width="30" Height="30" Click="WordPath_button_Click"/>
+                <Button x:Name="WordPath_button" Content="..." Grid.Column="2" Margin="0,3,0,0" Width="30" Height="30" Click="WordPath_button_Click" IsEnabled="False"/>
             </Grid>
         </GroupBox>
 
@@ -48,7 +48,7 @@
                 </Grid.ColumnDefinitions>
                 <Label x:Name="ExcelPath_label" Content="Excel输出路径：" Margin="10,29" FontSize="16" Width="120" Height="30"/>
                 <TextBox x:Name="ExcelPath_textBox" Grid.Column="1" Margin="0" TextWrapping="Wrap" Text="" FontSize="16" Height="30" IsEnabled="False"/>
-                <Button x:Name="ExcelPath_button" Content="..." Grid.Column="2" Margin="0,3,0,0" Width="30" Height="30" Click="ExcelPath_button_Click"/>
+                <Button x:Name="ExcelPath_button" Content="..." Grid.Column="2" Margin="0,3,0,0" Width="30" Height="30" Click="ExcelPath_button_Click" IsEnabled="False"/>
             </Grid>
         </GroupBox>
         <Grid Grid.Row="3">

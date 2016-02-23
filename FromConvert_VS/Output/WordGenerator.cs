@@ -37,7 +37,7 @@ namespace FromConvert_VS.Output
             {
                 word_inster_table(m_Docx, datalist[i], i + 1);
                 //word_insert_picture(m_Docx, datalist[i].PrjName, datalist[i].PhotoPathName);
-                word_insert_picture(m_Docx, "D:\\photo");
+                word_insert_picture(m_Docx, datalist[i].PhotoPathName);
             }
             //输出
             FileStream sw = null;
@@ -217,30 +217,31 @@ namespace FromConvert_VS.Output
         /// </summary>
         private static void word_insert_picture(XWPFDocument m_Docx, string photoPathName)
         {
-            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(photoPathName);   //存储照片的路径
-            System.IO.FileInfo[] files = dir.GetFiles();                                //获取所有文件信息
+            System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(photoPathName);
+            System.IO.FileInfo[] files = dir.GetFiles();
 
             foreach (System.IO.FileInfo file in files)
             {
                 FileStream gfs = new FileStream(photoPathName + "\\" + file.Name, FileMode.Open, FileAccess.Read);
-                XWPFParagraph gp = m_Docx.CreateParagraph(); //创建XWPFParagraph
-                gp.SetAlignment(ParagraphAlignment.CENTER);
+                XWPFParagraph gp = m_Docx.CreateParagraph();
+                gp.SetAlignment(ParagraphAlignment.CENTER);         
                 XWPFRun gr = gp.CreateRun();
 
-                //添加图片（注意设置图片的大小） 默认最小的一边为1000000
                 System.Drawing.Image image = System.Drawing.Image.FromFile(photoPathName + "\\" + file.Name);
+                Double rate = (Double)image.Height / image.Width;
                 int height, width;
-                if (image.Height > image.Width)
+                if (rate > 1)
                 {
-                    height = 3000000;
-                    width = 2000000;
+                    width = 3000000;
+                    height = (Int32)(width * rate);
+                    
                 }
                 else
                 {
-                    height = 2000000;
-                    width = 3000000;
+                    height = 3000000;
+                    width = (Int32)(height / rate);
                 }
-                gr.AddPicture(gfs, (int) NPOI.XWPF.UserModel.PictureType.JPEG, file.Name, width, height);
+                gr.AddPicture(gfs, (int)PictureType.JPEG, file.Name, width, height);
                 gfs.Close();
             }
         }

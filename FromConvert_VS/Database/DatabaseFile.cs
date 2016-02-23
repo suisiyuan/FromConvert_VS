@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Linq;
@@ -29,8 +30,9 @@ namespace FromConvert_VS.Database
         private SQLiteConnection dbFileConnection;
         private SQLiteCommand cmd;
         private DbTransaction trans;
-        SQLiteDataReader reader;
 
+
+        private SQLiteDataReader reader;
         private List<OutputData> outputDataList = new List<OutputData>();
         internal List<OutputData> OutputDataList
         {
@@ -47,14 +49,14 @@ namespace FromConvert_VS.Database
 
 
 
-        //构造函数 按照格式建立数据库
+        //构造函数 按照文件路径建立数据库类
         public DatabaseFile(String prjPath)
         {
             //赋予数据库文件路径
             this.prjPath = prjPath;            
         }
 
-        //初始化数据库按文件格式
+        //按照标准初始化数据库文件格式
         public void InitDbFile()
         {
             //新建数据库连接 初始化数据库命令变量
@@ -95,7 +97,7 @@ namespace FromConvert_VS.Database
             cmd.CommandText = "CREATE TABLE KMLPoly(id INTEGER, orderId, longitude REAL, latitude REAL, content TEXT)";
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = "CREATE TABLE Photo(prjName TEXT, markId INTEGER, photoData BLOB, photoName TEXT)";
+            cmd.CommandText = "CREATE TABLE Photo(markerId INTEGER, photoData BLOB, photoName TEXT)";
             cmd.ExecuteNonQuery();
 
             //释放资源
@@ -386,6 +388,9 @@ namespace FromConvert_VS.Database
         }
 
 
+
+
+
         //读取数据库文件 获取导出word和excel所需信息
         public void ReadDbFile()
         {
@@ -393,17 +398,29 @@ namespace FromConvert_VS.Database
             dbFileConnection.Open();
             cmd = dbFileConnection.CreateCommand();
 
+
+            //创建图片临时存储文件夹
+            String Path = "D:\\基站照片";
+            if (!Directory.Exists(Path))
+            {
+                Directory.CreateDirectory(Path);
+            }
+
             //获取工程名
             cmd.CommandText = "SELECT * FROM ProjectInfo";
             reader = cmd.ExecuteReader();
             String prjName = reader["prjName"] + "";
             reader.Close();
+            if (!Directory.Exists(Path + "\\" + prjName))
+            {
+                Directory.CreateDirectory(Path + "\\" + prjName);
+            }
+
+
 
             //获取基站信息
             cmd.CommandText = "SELECT * FROM BaseStation";
             reader = cmd.ExecuteReader();
-
-            //将基站信息
             while (reader.Read())
             {
                 OutputData outputData = new OutputData();
@@ -421,12 +438,30 @@ namespace FromConvert_VS.Database
                 outputData.AntennaDirection2 = reader["antenna_direction_2"] + "";
                 outputData.AntennaDirection3 = reader["antenna_direction_3"] + "";
                 outputData.AntennaDirection4 = reader["antenna_direction_4"] + "";
-                outputData.PhotoPathName = "";
+                if (!Directory.Exists(Path + "\\" + prjName + "\\" + reader["markerId"]))
+                {
+                    Directory.CreateDirectory(Path + "\\" + prjName + "\\" + reader["markerId"]);
+                }
+                outputData.PhotoPathName = Path + "\\" + prjName + "\\" + reader["markerId"];
                 OutputDataList.Add(outputData);
             }
+            reader.Close();
 
+
+            //获取图片数据并存储
+            cmd.CommandText = "SELECT * FROM Photo";
+            reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                MemoryStream streamImage = new MemoryStream(reader["photoData"] as byte[]);
+                FileStream file = new FileStream(Path + "\\" + prjName + "\\" + reader["markerId"] + "\\" + reader["photoName"], FileMode.OpenOrCreate, FileAccess.Write);
+                BinaryWriter w = new BinaryWriter(file);
+                w.Write(streamImage.ToArray());
+                file.Close();
+                streamImage.Close();
+            }
+            reader.Close();
         }
-
 
     }
 }

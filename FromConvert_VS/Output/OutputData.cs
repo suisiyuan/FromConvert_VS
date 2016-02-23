@@ -22,7 +22,7 @@ namespace FromConvert_VS.Output
         private String antennaDirection2;   //天线方向2
         private String antennaDirection3;   //天线方向3
         private String antennaDirection4;   //天线方向4
-        private String photoPathName;       //照片路径
+        private String photoPathName;       //基站照片存储文件夹路径
 
         public string PrjName
         {
