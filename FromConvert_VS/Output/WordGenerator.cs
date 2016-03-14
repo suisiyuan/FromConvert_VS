@@ -11,7 +11,7 @@ using FromConvert_VS.DigitalMapParser.Utils;
 
 namespace FromConvert_VS.Output
 {
-    //传入数据---导出一份Word文件
+
     internal class WordGenerator
     {
         private const string TAG = "WordGenerator";
@@ -32,37 +32,16 @@ namespace FromConvert_VS.Output
         {
             XWPFDocument m_Docx = new XWPFDocument();
             word_init(m_Docx);
-            //内容
             for (int i = 0; i < datalist.Count; i++)
             {
                 word_inster_table(m_Docx, datalist[i], i + 1);
-                //word_insert_picture(m_Docx, datalist[i].PrjName, datalist[i].PhotoPathName);
                 word_insert_picture(m_Docx, datalist[i].PhotoPathName);
             }
-            //输出
-            FileStream sw = null;
-            try
-            {
-                sw = File.Create(outputPath);
-                if (m_Docx == null)
-                {
-                    Log.Err(TAG, "m_Docx is null");
-                }
-                if (sw == null)
-                {
-                    Log.Err(TAG, "sw is null");
-                }
-                m_Docx.Write(sw);
-                sw.Close();
-            }
-            catch
-            {
-                Log.Err(TAG, "something is wrong");
-            }
-            finally
-            {
-                sw.Close();
-            }
+
+            FileStream sw;
+            sw = File.Create(outputPath);
+            m_Docx.Write(sw);
+            sw.Close();
         }
 
         /// <summary>
@@ -71,85 +50,84 @@ namespace FromConvert_VS.Output
         /// <param name="m_Docx">根文档</param>
         private static void word_init(XWPFDocument m_Docx)
         {
-            //1‘=1440twip=25.4mm=72pt(磅point)=96px(像素pixel)
-            //1px(像素pixel)=0.75pt(磅point)
-            // A4:W=11906 twip=8.269''=210mm,h=16838twip=11.693''=297mm
-            //A5:W=8390 twip=5.827''=148mm,h=11906 twip=8.269''=210mm
-            //A6:W=5953 twip=4.134''=105mm,h=8390twip=5.827''=1148mm
-            //16k195mmX270mm:
-            //16k184mmX260mm:
-            //16k197mmX273mm:
+            //设置页面 将页面设置为A4 纵向
+            //参考网站  http://www.aiuxian.com/article/p-1970779.html
             CT_SectPr m_SectPr = new CT_SectPr();
-            //页面设置A4纵向
             m_SectPr.pgSz.w = (ulong) 11906;
             m_SectPr.pgSz.h = (ulong) 16838;
             m_Docx.Document.body.sectPr = m_SectPr;
-            //第一页
-            word_insert_space(4, m_Docx);
-            word_insert_text(m_Docx, "宋体", 22, "【项目名称】");
+
+            //第一页 封面
+            word_insert_space(5, m_Docx);
+            word_insert_text(m_Docx, "宋体", 22, "【此处填写项目工程名】");
             word_insert_text(m_Docx, "宋体", 22, "GSM-R 通信系统");
             word_insert_text(m_Docx, "宋体", 22, "现场勘查报告");
-
-            word_insert_space(8, m_Docx);
-            word_insert_text(m_Docx, "宋体", 22, "【日期】");
-
             word_insert_space(7, m_Docx);
-            //第二页
-            //表1
+            word_insert_text(m_Docx, "宋体", 22, "【此处填写报告日期】");
+            word_insert_space(7, m_Docx);
+
+
+            //创建表并获取该表
             XWPFTable table = m_Docx.CreateTable(4, 2);
             CT_Tbl ctbl = m_Docx.Document.body.GetTblArray()[0];
-            CT_TblPr ctblpr = ctbl.AddNewTblPr();
-            ctblpr.jc = new CT_Jc();
-            ctblpr.jc.val = ST_Jc.center;
-            table.Width = 4000;
-            table.GetRow(0).GetCell(0).SetText("项目");
-            table.GetRow(1).GetCell(0).SetText("日期");
-            table.GetRow(2).GetCell(0).SetText("现场勘查人员");
-            table.GetRow(3).GetCell(0).SetText("报告编制人员");
-            CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
-            m_Pr.tcW = new CT_TblWidth();
-            m_Pr.tcW.w = "4000";
-            m_Pr.tcW.type = ST_TblWidth.dxa; //设置单元格宽度
+            //表居中
+            ctbl.AddNewTblPr().jc = new CT_Jc();
+            ctbl.AddNewTblPr().jc.val = ST_Jc.center;
+            //表宽度为8000
+            ctbl.AddNewTblPr().AddNewTblW().w = "8000";
+            ctbl.AddNewTblPr().AddNewTblW().type = ST_TblWidth.dxa;
+
+
+            //table.Width = 4000;
+
+            //CT_TblPr ctblpr = ctbl.AddNewTblPr();
+            //ctblpr.jc = new CT_Jc();
+            //ctblpr.jc.val = ST_Jc.center;
+            //table.Width = 6000;
+            //table.GetRow(0).GetCell(0).SetText("项目");
+            //table.GetRow(1).GetCell(0).SetText("勘察日期");
+            //table.GetRow(2).GetCell(0).SetText("现场勘查人员");
+            //table.GetRow(3).GetCell(0).SetText("报告修正人员");
+
+            //CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
+            //m_Pr.tcW = new CT_TblWidth();
+            //m_Pr.tcW.w = "4000";
+            //m_Pr.tcW.type = ST_TblWidth.dxa; //设置单元格宽度
+
+
             word_insert_space(2, m_Docx);
             word_insert_text(m_Docx, "宋体", 12, "基站勘察表");
         }
 
 
 
-        /*
-         *插入空行函数
-         *@n 插入的行数
-         *@m_Docx 根文档
-         *@longth 空行高
-         */
+
+        //插入空行
         private static void word_insert_space(int n, XWPFDocument m_Docx, int longth = 250)
         {
             for (int i = 0; i < n; i++)
             {
                 XWPFParagraph gp_space = m_Docx.CreateParagraph(); //创建XWPFParagraph
                 gp_space.SetAlignment(ParagraphAlignment.CENTER);
-                gp_space.SetSpacingBefore(longth);
+                gp_space.SetSpacingBefore(longth); 
                 gp_space.SpacingAfter = longth;
             }
         }
 
-        /// <summary>
-        /// 插入文字函数
-        /// </summary>
-        /// <param name="m_Docx"></param>
-        /// <param name="Font"></param>
-        /// <param name="size"></param>
-        /// <param name="text"></param>
-        /// <param name="position"></param>
+
+
+        //插入一段文字
         private static void word_insert_text(XWPFDocument m_Docx, string Font, int size, string text, ParagraphAlignment position = ParagraphAlignment.CENTER)
         {
-            XWPFParagraph gp = m_Docx.CreateParagraph(); //创建XWPFParagraph
+            XWPFParagraph gp = m_Docx.CreateParagraph();
             gp.SetAlignment(position);
             XWPFRun gr = gp.CreateRun();
             gr.SetFontFamily(Font);
             gr.SetFontSize(size);
             gr.SetText(text);
         }
+
+
 
         /// <summary>
         /// word 插入表格功能（13行2列）
@@ -175,7 +153,7 @@ namespace FromConvert_VS.Output
             table.GetRow(1).GetCell(1).SetText(bean.KilometerMark);
             table.GetRow(2).GetCell(0).SetText("下行侧向");
             table.GetRow(2).GetCell(1).SetText(bean.SideDirection);
-            table.GetRow(3).GetCell(0).SetText("距线路中心距离（m）");
+            table.GetRow(3).GetCell(0).SetText("距线路中心距离(m)");
             table.GetRow(4).GetCell(0).SetText("经度");
             table.GetRow(4).GetCell(1).SetText(bean.Longitude);
             table.GetRow(5).GetCell(0).SetText("纬度");
@@ -203,10 +181,10 @@ namespace FromConvert_VS.Output
             CT_TcPr ctPr = cttc.AddNewTcPr();
             ctPr.gridSpan = new CT_DecimalNumber();
             ctPr.gridSpan.val = "2";
-            cttc.GetPList()[0].AddNewR().AddNewT().Value = "SITE 【序号】";
+            cttc.GetPList()[0].AddNewR().AddNewT().Value = "SITE [序号]";
 
             word_insert_space(1, m_Docx, 100);
-            word_insert_text(m_Docx, "宋体", 11, "SITE 【序号】勘站照片");
+            word_insert_text(m_Docx, "宋体", 11, "SITE [序号]勘站照片");
             word_insert_text(m_Docx, "宋体", 11, "（3-10张照片）");
 
             word_insert_space(1, m_Docx, 100);

@@ -453,6 +453,7 @@ namespace FromConvert_VS.Database
             reader = cmd.ExecuteReader();
             while (reader.Read())
             {
+                //读取到数据就存储成照片
                 MemoryStream streamImage = new MemoryStream(reader["photoData"] as byte[]);
                 FileStream file = new FileStream(Path + "\\" + prjName + "\\" + reader["markerId"] + "\\" + reader["photoName"], FileMode.OpenOrCreate, FileAccess.Write);
                 BinaryWriter w = new BinaryWriter(file);
