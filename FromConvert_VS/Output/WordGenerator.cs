@@ -77,17 +77,33 @@ namespace FromConvert_VS.Output
             ctbl.AddNewTblPr().AddNewTblW().w = "8000";
             ctbl.AddNewTblPr().AddNewTblW().type = ST_TblWidth.dxa;
 
+            //列宽设置
+            CT_TcPr m_Pr = table.GetRow(0).GetCell(0).GetCTTc().AddNewTcPr();
+            m_Pr.tcW = new CT_TblWidth();
+            m_Pr.tcW.w = "1500";
+            m_Pr.tcW.type = ST_TblWidth.dxa;
+            m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
+            m_Pr.tcW = new CT_TblWidth();
+            m_Pr.tcW.w = "1000";//单元格宽
+            m_Pr.tcW.type = ST_TblWidth.dxa;
 
-            //table.Width = 4000;
+
+
+            //设置表中文本
+            //table.GetRow(0).GetCell(0).SetText("项目");
+            //table.GetRow(1).GetCell(0).SetText("勘察日期");
+            //table.GetRow(2).GetCell(0).SetText("现场勘查人员");
+            //table.GetRow(3).GetCell(0).SetText("报告修正人员");
+
+
+
+
 
             //CT_TblPr ctblpr = ctbl.AddNewTblPr();
             //ctblpr.jc = new CT_Jc();
             //ctblpr.jc.val = ST_Jc.center;
             //table.Width = 6000;
-            //table.GetRow(0).GetCell(0).SetText("项目");
-            //table.GetRow(1).GetCell(0).SetText("勘察日期");
-            //table.GetRow(2).GetCell(0).SetText("现场勘查人员");
-            //table.GetRow(3).GetCell(0).SetText("报告修正人员");
+
 
             //CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
             //m_Pr.tcW = new CT_TblWidth();
