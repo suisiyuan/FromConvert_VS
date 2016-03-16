@@ -99,16 +99,16 @@ namespace FromConvert_VS.Output
 
 
 
-            CT_TblPr ctblpr = ctbl.AddNewTblPr();
-            ctblpr.jc = new CT_Jc();
-            ctblpr.jc.val = ST_Jc.center;
-            table.Width = 6000;
+            //CT_TblPr ctblpr = ctbl.AddNewTblPr();
+            //ctblpr.jc = new CT_Jc();
+            //ctblpr.jc.val = ST_Jc.center;
+            //table.Width = 6000;
 
 
-            CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
-            m_Pr.tcW = new CT_TblWidth();
-            m_Pr.tcW.w = "4000";
-            m_Pr.tcW.type = ST_TblWidth.dxa; //设置单元格宽度
+            //CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
+            //m_Pr.tcW = new CT_TblWidth();
+            //m_Pr.tcW.w = "4000";
+            //m_Pr.tcW.type = ST_TblWidth.dxa; //设置单元格宽度
 
 
             word_insert_space(2, m_Docx);
