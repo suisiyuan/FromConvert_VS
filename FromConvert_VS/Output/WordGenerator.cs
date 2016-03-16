@@ -90,25 +90,25 @@ namespace FromConvert_VS.Output
 
 
             //设置表中文本
-            //table.GetRow(0).GetCell(0).SetText("项目");
-            //table.GetRow(1).GetCell(0).SetText("勘察日期");
-            //table.GetRow(2).GetCell(0).SetText("现场勘查人员");
-            //table.GetRow(3).GetCell(0).SetText("报告修正人员");
+            table.GetRow(0).GetCell(0).SetText("项目");
+            table.GetRow(1).GetCell(0).SetText("勘察日期");
+            table.GetRow(2).GetCell(0).SetText("现场勘查人员");
+            table.GetRow(3).GetCell(0).SetText("报告修正人员");
 
 
 
 
 
-            //CT_TblPr ctblpr = ctbl.AddNewTblPr();
-            //ctblpr.jc = new CT_Jc();
-            //ctblpr.jc.val = ST_Jc.center;
-            //table.Width = 6000;
+            CT_TblPr ctblpr = ctbl.AddNewTblPr();
+            ctblpr.jc = new CT_Jc();
+            ctblpr.jc.val = ST_Jc.center;
+            table.Width = 6000;
 
 
-            //CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
-            //m_Pr.tcW = new CT_TblWidth();
-            //m_Pr.tcW.w = "4000";
-            //m_Pr.tcW.type = ST_TblWidth.dxa; //设置单元格宽度
+            CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
+            m_Pr.tcW = new CT_TblWidth();
+            m_Pr.tcW.w = "4000";
+            m_Pr.tcW.type = ST_TblWidth.dxa; //设置单元格宽度
 
 
             word_insert_space(2, m_Docx);
