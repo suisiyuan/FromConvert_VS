@@ -8,14 +8,13 @@ using NPOI.OpenXmlFormats.Wordprocessing;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Data.SQLite;
 using FromConvert_VS.DigitalMapParser.Utils;
+using Novacode;
 
 namespace FromConvert_VS.Output
 {
 
     internal class WordGenerator
     {
-        private const string TAG = "WordGenerator";
-
         /// <summary>
         /// 禁止创建实例
         /// </summary>
@@ -77,6 +76,13 @@ namespace FromConvert_VS.Output
             ctbl.AddNewTblPr().AddNewTblW().w = "8000";
             ctbl.AddNewTblPr().AddNewTblW().type = ST_TblWidth.dxa;
 
+
+            //CT_TblPr ctblpr = ctbl.AddNewTblPr();
+            //ctblpr.jc = new CT_Jc();
+            //ctblpr.jc.val = ST_Jc.center;
+            //table.Width = 6000;
+
+
             //列宽设置
             CT_TcPr m_Pr = table.GetRow(0).GetCell(0).GetCTTc().AddNewTcPr();
             m_Pr.tcW = new CT_TblWidth();
@@ -94,15 +100,6 @@ namespace FromConvert_VS.Output
             table.GetRow(1).GetCell(0).SetText("勘察日期");
             table.GetRow(2).GetCell(0).SetText("现场勘查人员");
             table.GetRow(3).GetCell(0).SetText("报告修正人员");
-
-
-
-
-
-            //CT_TblPr ctblpr = ctbl.AddNewTblPr();
-            //ctblpr.jc = new CT_Jc();
-            //ctblpr.jc.val = ST_Jc.center;
-            //table.Width = 6000;
 
 
             //CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
