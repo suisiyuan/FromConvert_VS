@@ -8,45 +8,33 @@ using NPOI.OpenXmlFormats.Wordprocessing;
 using ICSharpCode.SharpZipLib.Zip;
 using System.Data.SQLite;
 using FromConvert_VS.DigitalMapParser.Utils;
-using Novacode;
+using NPOI.OpenXmlFormats.Dml.WordProcessing;
+using System.Drawing;
 
 namespace FromConvert_VS.Output
 {
 
     internal class WordGenerator
     {
-        /// <summary>
-        /// 禁止创建实例
-        /// </summary>
+
         private WordGenerator()
         {
         }
 
-        /// <summary>
-        /// 生成一个工程的word文件
-        /// </summary>
-        /// <param name="datalist">当前工程的数据List</param>
-        /// <param name="outputPath">word文件输出路径</param>
         public static void word_creat_one(List<OutputData> datalist, string outputPath)
         {
             XWPFDocument m_Docx = new XWPFDocument();
             word_init(m_Docx);
-            for (int i = 0; i < datalist.Count; i++)
-            {
-                word_inster_table(m_Docx, datalist[i], i + 1);
-                word_insert_picture(m_Docx, datalist[i].PhotoPathName);
+            for (int i = 0; i < datalist.Count; i++){
+                word_inster_table(m_Docx, datalist[i], i + 1, datalist[i].PhotoPathName);
             }
 
-            FileStream sw;
-            sw = File.Create(outputPath);
+            FileStream sw = File.Create(outputPath);
             m_Docx.Write(sw);
             sw.Close();
         }
 
-        /// <summary>
-        /// 生成模板文件
-        /// </summary>
-        /// <param name="m_Docx">根文档</param>
+
         private static void word_init(XWPFDocument m_Docx)
         {
             //设置页面 将页面设置为A4 纵向
@@ -76,23 +64,13 @@ namespace FromConvert_VS.Output
             ctbl.AddNewTblPr().AddNewTblW().w = "8000";
             ctbl.AddNewTblPr().AddNewTblW().type = ST_TblWidth.dxa;
 
-
-            //CT_TblPr ctblpr = ctbl.AddNewTblPr();
-            //ctblpr.jc = new CT_Jc();
-            //ctblpr.jc.val = ST_Jc.center;
-            //table.Width = 6000;
-
-
             //列宽设置
-            CT_TcPr m_Pr = table.GetRow(0).GetCell(0).GetCTTc().AddNewTcPr();
+            CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
             m_Pr.tcW = new CT_TblWidth();
-            m_Pr.tcW.w = "1500";
-            m_Pr.tcW.type = ST_TblWidth.dxa;
-            m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
-            m_Pr.tcW = new CT_TblWidth();
-            m_Pr.tcW.w = "1000";//单元格宽
+            m_Pr.tcW.w = "3000";
             m_Pr.tcW.type = ST_TblWidth.dxa;
 
+            //行高设置
 
 
             //设置表中文本
@@ -101,17 +79,8 @@ namespace FromConvert_VS.Output
             table.GetRow(2).GetCell(0).SetText("现场勘查人员");
             table.GetRow(3).GetCell(0).SetText("报告修正人员");
 
-
-            //CT_TcPr m_Pr = table.GetRow(0).GetCell(1).GetCTTc().AddNewTcPr();
-            //m_Pr.tcW = new CT_TblWidth();
-            //m_Pr.tcW.w = "4000";
-            //m_Pr.tcW.type = ST_TblWidth.dxa; //设置单元格宽度
-
-
-            word_insert_space(2, m_Docx);
-            word_insert_text(m_Docx, "宋体", 12, "基站勘察表");
+            word_insert_space(4, m_Docx);
         }
-
 
 
 
@@ -142,16 +111,7 @@ namespace FromConvert_VS.Output
 
 
 
-        /// <summary>
-        /// word 插入表格功能（13行2列）
-        /// </summary>
-        /// <param name="m_Docx">根文档</param>
-        /// <param name="device_type">设备类型</param>
-        /// <param name="kilometer_mark">公里标</param>
-        /// <param name="side_direction">下行侧向</param>
-        /// <param name="longitude">经度</param>
-        /// <param name="latitude">纬度</param>
-        private static void word_inster_table(XWPFDocument m_Docx, OutputData bean, int i = 1)
+        private static void word_inster_table(XWPFDocument m_Docx, OutputData bean, int i, String photoPathName)
         {
             XWPFTable table = m_Docx.CreateTable(12, 2);
             CT_Tbl ctbl = m_Docx.Document.body.GetTblArray()[i];
@@ -196,45 +156,33 @@ namespace FromConvert_VS.Output
             ctPr.gridSpan.val = "2";
             cttc.GetPList()[0].AddNewR().AddNewT().Value = "SITE [序号]";
 
-            word_insert_space(1, m_Docx, 100);
-            word_insert_text(m_Docx, "宋体", 11, "SITE [序号]勘站照片");
-            word_insert_text(m_Docx, "宋体", 11, "（3-10张照片）");
 
-            word_insert_space(1, m_Docx, 100);
-        }
-
-        /// <summary>
-        /// word文档插入图片
-        /// </summary>
-        private static void word_insert_picture(XWPFDocument m_Docx, string photoPathName)
-        {
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(photoPathName);
             System.IO.FileInfo[] files = dir.GetFiles();
 
             foreach (System.IO.FileInfo file in files)
             {
                 FileStream gfs = new FileStream(photoPathName + "\\" + file.Name, FileMode.Open, FileAccess.Read);
+                Image image = Image.FromFile(photoPathName + "\\" + file.Name);
+                Double ratio = (Double)image.Width / (Double)image.Height;
+                image.Dispose();
                 XWPFParagraph gp = m_Docx.CreateParagraph();
-                gp.SetAlignment(ParagraphAlignment.CENTER);         
+                gp.SetAlignment(ParagraphAlignment.CENTER);
                 XWPFRun gr = gp.CreateRun();
 
-                System.Drawing.Image image = System.Drawing.Image.FromFile(photoPathName + "\\" + file.Name);
-                Double rate = (Double)image.Height / image.Width;
-                int height, width;
-                if (rate > 1)
+                if (ratio > 1)
                 {
-                    width = 3000000;
-                    height = (Int32)(width * rate);
-                    
+                    gr.AddPicture(gfs, (int)PictureType.JPEG, file.Name, 3555556, 2000000);
                 }
-                else
-                {
-                    height = 3000000;
-                    width = (Int32)(height / rate);
+                else {
+                    gr.AddPicture(gfs, (int)PictureType.JPEG, file.Name, 2000000, 3555556);
                 }
-                gr.AddPicture(gfs, (int)PictureType.JPEG, file.Name, width, height);
                 gfs.Close();
+
             }
+
+            word_insert_space(3, m_Docx, 100);
         }
+
     }
 }
