@@ -22,20 +22,10 @@ namespace FromConvert_VS.View
         Boolean saved = false;
         String projectName = "", mapPath = "", excelPath = "", kmlPath = "", outputPath = "";
 
-        //数据管理类
         private PrjItem prjItem;
-
-        //xml文件操作类
         private KmlFile kmlFile;
-
-        //excel文件操作类
         private ExcelFile excelFile;
-
-        //CAD xml 文件操作类
         private CadXmlFile cadXmlFile;
-
-
-        //数据库文件类
         private DatabaseFile databaseFile;
 
 
@@ -56,7 +46,6 @@ namespace FromConvert_VS.View
         //获取xml文件或者数字地图文件路径
         private void MapPath_button_Click(object sender, RoutedEventArgs e)
         {
-
             //CAD文件转换所得xml文件
             if (MapPath_comboBox.SelectedIndex == 0)
             {

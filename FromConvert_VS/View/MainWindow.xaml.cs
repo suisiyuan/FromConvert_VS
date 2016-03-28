@@ -1,4 +1,13 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Diagnostics;
+using System.Windows.Forms;
+using FromConvert_VS.ExcelParser;
+using FromConvert_VS.KmlParser;
+using FromConvert_VS.DigitalMapParser;
+using FromConvert_VS.CadXmlParser;
+using FromConvert_VS.Database;
+using FromConvert_VS.Output;
 
 namespace FromConvert_VS.View
 {
@@ -7,42 +16,225 @@ namespace FromConvert_VS.View
     /// </summary>
     public partial class MainWindow : Window
     {
+        private String projectName = "", mapPath = "", excelPath = "", kmlPath = "", outputPath = "";
+
+        private PrjItem prjItem;
+        private KmlFile kmlFile;
+        private ExcelFile excelFile;
+        private CadXmlFile cadXmlFile;
+        private DatabaseFile databaseFile;
+
+
+        private String projectPath_output = "", wordPath_output = "", excelPath_output = "";
+        private String projectName_output = "", projectFolder_output = "";
+        private DatabaseFile databaseFile_output;
+
+
+
         public MainWindow()
         {
-            InitializeComponent();
-
-            //注册事件
-            InitEvents();
-        } 
-            
-        private void InitEvents()
-        {
-            //进入新建工程界面窗口
-            this.new_project.Click += delegate(object sender, RoutedEventArgs args)
-            {
-                this.Hide();
-                NewProjectWindow new_project = new NewProjectWindow();
-                new_project.ShowDialog();
-                this.ShowDialog();
-            };
-
-            //进入工程导出文件窗口
-            this.output_project.Click += delegate(object sender, RoutedEventArgs args)
-            {
-                this.Hide();
-                OutputProjectWindow output_project = new OutputProjectWindow();
-                output_project.ShowDialog();             
-                this.ShowDialog();
-            };
-
-            //点击退出按钮，退出应用
-            this.exit_button.Click += delegate(object sender, RoutedEventArgs args)
-            {
-                this.Close();
-            };
-
-
+            InitializeComponent();          
         }
+
+
+        private void ProjectName_TextChanged(object sender, RoutedEventArgs e)
+        {
+            projectName = ProjectName_textbox.Text;
+        }
+
+        private void MapPath_Click(object sender, RoutedEventArgs e)
+        {
+            //CAD文件转换所得xml文件
+            if (MapPath_comboBox.SelectedIndex == 0)
+            {
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.InitialDirectory = "d:\\";
+                dialog.RestoreDirectory = true;
+                dialog.Filter = "xml文件 (*.xml) | *.xml";
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    MapPath_textBox.Text = dialog.FileName;
+                    mapPath = dialog.FileName;
+                    cadXmlFile = new CadXmlFile(mapPath);
+                }
+            }
+            //数字地图
+            else if (MapPath_comboBox.SelectedIndex == 1)
+            {
+                FolderBrowserDialog dialog = new FolderBrowserDialog();
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    string path = dialog.SelectedPath;
+                    if (!PrjItem.isDirectoryValid(path))
+                    {
+                        System.Windows.MessageBox.Show("当前路径不符合数字地图文件要求", "错误");
+                        return;
+                    }
+                    prjItem = new PrjItem(path);
+                    //获取选中的文件夹
+                    this.MapPath_textBox.Text = dialog.SelectedPath;
+                    mapPath = dialog.SelectedPath;
+                }
+            }
+        }
+
+        private void ExcelPath_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.InitialDirectory = "d:\\";
+            dialog.RestoreDirectory = true;
+            dialog.Filter = "excel文件 | *.xlsx";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                ExcelPath_textBox.Text = dialog.FileName;
+                excelPath = dialog.FileName;
+                excelFile = new ExcelFile(excelPath);
+            }
+        }
+
+        private void KmlPath_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.InitialDirectory = "d:\\";
+            dialog.RestoreDirectory = true;
+            dialog.Filter = "kml文件 | *.kml";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                KmlPath_textBox.Text = dialog.FileName;
+                kmlPath = dialog.FileName;
+                kmlFile = new KmlFile(kmlPath);
+            }
+        }
+
+        
+        private void SaveProject_Click(object sender, RoutedEventArgs e)
+        {
+            if (projectName.Length == 0 && mapPath.Length != 0)
+            {
+                System.Windows.Forms.MessageBox.Show("缺少工程文件名", "信息不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (projectName.Length != 0 && mapPath.Length == 0)
+            {
+                System.Windows.Forms.MessageBox.Show("缺少铁路信息源", "信息不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (projectName.Length == 0 && mapPath.Length == 0)
+            {
+                System.Windows.Forms.MessageBox.Show("缺少工程文件名和铁路信息文件", "信息不全", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                SaveFileDialog dialog = new SaveFileDialog(); ;
+                dialog.Filter = "db文件 (*.db)|*.db";
+                dialog.FilterIndex = 1;
+                dialog.InitialDirectory = "d:\\";
+                dialog.RestoreDirectory = true;
+                dialog.FileName = projectName;
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    outputPath = dialog.FileName;
+                }
+
+                databaseFile = new DatabaseFile(outputPath);
+                databaseFile.InitDbFile();
+                SaveProject();
+            }
+        }
+
+        private void SaveProject()
+        {
+            //CAD文件
+            if (MapPath_comboBox.SelectedIndex == 0)
+            {
+                databaseFile.WriteProjectInfo(0, projectName);
+                databaseFile.WriteCadMap(cadXmlFile);
+            }
+            //数字地图
+            else if (MapPath_comboBox.SelectedIndex == 1)
+            {
+                databaseFile.WriteProjectInfo(1, projectName);
+                databaseFile.WriteDigitalMap(prjItem);
+            }
+
+            //如果有kml文件
+            if (kmlFile != null)
+            {
+                databaseFile.WriteKml(kmlFile);
+            }
+
+            //如果有excel文件
+            if (excelFile != null)
+            {
+                databaseFile.WriteExcel(excelFile);
+            }
+
+            System.Windows.MessageBox.Show("文件生成成功", "提示");
+        }
+
+
+
+
+        private void LoadProject_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.InitialDirectory = "d:\\";
+            dialog.RestoreDirectory = true;
+            dialog.Filter = "db文件 (*.db) | *.db";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                string delimStr = "\\";
+                char[] delimiter = delimStr.ToCharArray();
+                string[] sArray;
+
+                ProjectPath_textBox.Text = dialog.FileName;
+                projectPath_output = dialog.FileName;
+                projectName = projectPath_output.Substring(0, projectPath_output.Length - 3);
+                sArray = projectName.Split(delimiter);
+                projectName = sArray[sArray.Length - 1];
+                projectFolder_output = sArray[0];
+                for (int i = 1; i < sArray.Length - 1; i++)
+                {
+                    projectFolder_output = projectFolder_output + "\\" + sArray[i];
+                }
+
+                this.ExportWord_button.IsEnabled = true;
+                this.ExportExcel_button.IsEnabled = true;
+
+                //根据数据库文件文件路径新建类                
+                databaseFile = new DatabaseFile(projectPath_output);
+                databaseFile.ReadDbFile();
+            }
+        }
+
+
+        private void ExportWord_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "word文件 (*.docx)|*.docx";
+            dialog.FilterIndex = 1;
+            dialog.InitialDirectory = projectFolder_output;
+            dialog.RestoreDirectory = true;
+            dialog.FileName = projectName + "_word";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                WordGenerator.word_creat_one(databaseFile.OutputDataList, dialog.FileName);
+            }
+        }
+
+
+        private void ExportExcel_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog(); ;
+            dialog.Filter = "excel文件 (*.xls)|*.xls";
+            dialog.FilterIndex = 1;
+            dialog.InitialDirectory = projectFolder_output;
+            dialog.RestoreDirectory = true;
+            dialog.FileName = projectName + "_excel";
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {            
+                new ExcelGenerator(databaseFile.OutputDataList, dialog.FileName).Generate();
+            }
+        }
+
 
     }
 }
