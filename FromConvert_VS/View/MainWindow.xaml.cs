@@ -205,7 +205,7 @@ namespace FromConvert_VS.View
             }
         }
 
-
+        //导出Word文件
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
@@ -220,7 +220,7 @@ namespace FromConvert_VS.View
             }
         }
 
-
+        //导出Excel文件
         private void ExportExcel_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog(); ;
