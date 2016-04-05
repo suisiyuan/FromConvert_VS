@@ -79,7 +79,7 @@
                 </Grid>
             </Grid>
         </GroupBox>
-        <GroupBox x:Name="export_doc" Grid.Column="1" Header="报告生成" Margin="0,0,5,0" FontSize="16" FontFamily="YouYuan" FontWeight="Bold">
+        <GroupBox x:Name="export_doc" Grid.Column="1" Header="生成文档" Margin="0,0,5,0" FontSize="16" FontFamily="YouYuan" FontWeight="Bold">
             <Grid Margin="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50*"/>
@@ -104,7 +104,17 @@
                     <RowDefinition Height="50*"/>
                     <RowDefinition Height="50*"/>
                 </Grid.RowDefinitions>
+                <Grid Margin="0" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="27*"/>
+                        <RowDefinition Height="28*"/>
+                    </Grid.RowDefinitions>
+                </Grid>
+                <TextBlock x:Name="textBlock" Margin="10,10,0,0" Grid.Row="0" TextWrapping="Wrap" Text="左半部分为新建工程功能模块，用于整合多个文件中的信息并导出文件以供手机端APP使用。"/>
+                <TextBlock x:Name="textBlock1" Margin="10,10,0,0" Grid.Row="1" TextWrapping="Wrap" Text="右上部分为生成文档功能模块，可以使用手机端APP导出的文件生成Word和Excel文档。"/>
+                <Separator Margin="0" Grid.RowSpan="2" Grid.ColumnSpan="2"/>
             </Grid>
         </GroupBox>
+        
     </Grid>
 </Window>
