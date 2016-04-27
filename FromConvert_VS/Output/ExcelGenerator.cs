@@ -72,7 +72,6 @@ namespace FromConvert_VS.Output
                 if (fileStream != null)
                     fileStream.Close();
             }
-            MessageBox.Show("Excel文件导出成功", "完成");
         }
 
         /// <summary>

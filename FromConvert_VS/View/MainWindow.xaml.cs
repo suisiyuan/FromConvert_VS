@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -78,6 +79,7 @@ namespace FromConvert_VS.View
             }
         }
 
+
         private void ExcelPath_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -86,9 +88,13 @@ namespace FromConvert_VS.View
             dialog.Filter = "excel文件 | *.xlsx";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ExcelPath_textBox.Text = dialog.FileName;
+                ExcelPath_textBox.Clear();
                 excelPath = dialog.FileName;
                 excelFile = new ExcelFile(excelPath);
+                if (excelFile.CheckValidation())
+                {
+                    ExcelPath_textBox.Text = dialog.FileName;
+                }                               
             }
         }
 
@@ -100,9 +106,10 @@ namespace FromConvert_VS.View
             dialog.Filter = "kml文件 | *.kml";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                KmlPath_textBox.Text = dialog.FileName;
                 kmlPath = dialog.FileName;
                 kmlFile = new KmlFile(kmlPath);
+                KmlPath_textBox.Clear();
+                KmlPath_textBox.Text = dialog.FileName;                
             }
         }
 
@@ -198,8 +205,8 @@ namespace FromConvert_VS.View
 
                 this.ExportWord_button.IsEnabled = true;
                 this.ExportExcel_button.IsEnabled = true;
-
-                //根据数据库文件文件路径新建类                
+                this.checkBox.IsEnabled = true;
+           
                 databaseFile = new DatabaseFile(projectPath_output);
                 databaseFile.ReadDbFile();
             }
@@ -217,6 +224,31 @@ namespace FromConvert_VS.View
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 WordGenerator.word_creat_one(databaseFile.OutputDataList, dialog.FileName);
+                System.Windows.MessageBox.Show("Word文件导出成功", "完成");
+
+                //保存基站照片
+                if (checkBox.IsChecked == true)
+                {
+                    String path = Path.GetDirectoryName(dialog.FileName);
+                    String prjName = databaseFile.OutputDataList[0].PrjName;
+
+                    //创建文件夹
+                    if (!Directory.Exists(path + "\\" + prjName + "工程基站照片"))
+                        Directory.CreateDirectory(path + "\\" + prjName + "工程基站照片");
+
+                    //从temp文件夹中将照片复制出来
+                    foreach (OutputData outputData in databaseFile.OutputDataList)
+                    {
+                        if (!Directory.Exists(path + "\\" + prjName + "工程基站照片" + "\\" + outputData.MarkerId))
+                            Directory.CreateDirectory(path + "\\" + prjName + "工程基站照片" + "\\" + outputData.MarkerId);
+                        DirectoryInfo dir = new DirectoryInfo(Path.GetTempPath() + "\\" + "基站照片" + "\\" + prjName + "\\" + outputData.MarkerId);
+                        FileInfo[] files = dir.GetFiles();
+                        foreach (FileInfo file in files)
+                        {
+                            file.CopyTo(path + "\\" + prjName + "工程基站照片" + "\\" + outputData.MarkerId + "\\" + file.Name, true);
+                        }
+                    }
+                }
             }
         }
 
@@ -232,6 +264,7 @@ namespace FromConvert_VS.View
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {            
                 new ExcelGenerator(databaseFile.OutputDataList, dialog.FileName).Generate();
+                System.Windows.MessageBox.Show("Excel文件导出成功", "完成");
             }
         }
 

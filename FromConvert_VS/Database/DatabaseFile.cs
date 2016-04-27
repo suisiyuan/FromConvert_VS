@@ -66,7 +66,7 @@ namespace FromConvert_VS.Database
             //trans = dbFileConnection.BeginTransaction();
 
             //初始化数据库文件格式
-            cmd.CommandText = "CREATE TABLE ProjectInfo(mapInfo INTEGER, prjName TEXT, createTime TEXT)";
+            cmd.CommandText = "CREATE TABLE ProjectInfo(mapInfo INTEGER, prjName TEXT, creationTime TEXT)";
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = "CREATE TABLE BaseStation(markerId TEXT, distance_to_rail REAL, antenna_direction_1 TEXT, "
@@ -118,7 +118,7 @@ namespace FromConvert_VS.Database
                                   "("
                                   + "'" + mapInfo + "', "
                                   + "'" + prjName + "', "
-                                  + "'" + DateTime.Now.ToString() + "'"
+                                  + "'" + DateTime.Now.ToString("yyyy年MM月dd日") + "'"
                                   + ")";
                 cmd.ExecuteNonQuery();
                 trans.Commit();
@@ -391,7 +391,7 @@ namespace FromConvert_VS.Database
 
 
 
-        //读取数据库文件 获取导出word和excel所需信息
+        //加载数据文件时读取数据库文件 获取导出word和excel所需信息
         public void ReadDbFile()
         {
             dbFileConnection = new SQLiteConnection("Data Source=" + prjPath);
@@ -399,8 +399,8 @@ namespace FromConvert_VS.Database
             cmd = dbFileConnection.CreateCommand();
 
 
-            //创建图片临时存储文件夹
-            String Path = "D:\\基站照片";
+            //将基站照片存到系统临时文件夹
+            String Path = System.IO.Path.GetTempPath() + "\\基站照片";
             if (!Directory.Exists(Path))
             {
                 Directory.CreateDirectory(Path);
@@ -417,7 +417,6 @@ namespace FromConvert_VS.Database
             }
 
 
-
             //获取基站信息
             cmd.CommandText = "SELECT * FROM BaseStation";
             reader = cmd.ExecuteReader();
@@ -425,6 +424,7 @@ namespace FromConvert_VS.Database
             {
                 OutputData outputData = new OutputData();
                 outputData.PrjName = prjName;
+                outputData.MarkerId = reader["markerId"] + "";
                 outputData.Longitude = reader["longitude"] + "";
                 outputData.Latitude = reader["latitude"] + "";
                 outputData.DeviceType = reader["device_type"] + "";

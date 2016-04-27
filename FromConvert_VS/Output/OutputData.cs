@@ -9,6 +9,7 @@ namespace FromConvert_VS.Output
     class OutputData
     {
         private String prjName;             //工程名
+        private String markerId;            //id
         private String longitude;           //经度
         private String latitude;            //纬度
         private String deviceType;          //设备类型
@@ -34,6 +35,19 @@ namespace FromConvert_VS.Output
             set
             {
                 prjName = value;
+            }
+        }
+
+        public string MarkerId
+        {
+            get
+            {
+                return markerId;
+            }
+
+            set
+            {
+                markerId = value;
             }
         }
 

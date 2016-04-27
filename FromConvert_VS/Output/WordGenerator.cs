@@ -24,7 +24,10 @@ namespace FromConvert_VS.Output
         public static void word_creat_one(List<OutputData> datalist, string outputPath)
         {
             XWPFDocument m_Docx = new XWPFDocument();
-            word_init(m_Docx);
+            String prjName = datalist[0].PrjName;
+            word_init(m_Docx, prjName);
+
+
             for (int i = 0; i < datalist.Count; i++){
                 word_inster_table(m_Docx, datalist[i], i + 1, datalist[i].PhotoPathName);
             }
@@ -35,7 +38,7 @@ namespace FromConvert_VS.Output
         }
 
 
-        private static void word_init(XWPFDocument m_Docx)
+        private static void word_init(XWPFDocument m_Docx, String prjName)
         {
             //设置页面 将页面设置为A4 纵向
             //参考网站  http://www.aiuxian.com/article/p-1970779.html
@@ -46,11 +49,11 @@ namespace FromConvert_VS.Output
 
             //第一页 封面
             word_insert_space(5, m_Docx);
-            word_insert_text(m_Docx, "宋体", 22, "【此处填写项目工程名】");
+            word_insert_text(m_Docx, "宋体", 22, prjName);
             word_insert_text(m_Docx, "宋体", 22, "GSM-R 通信系统");
             word_insert_text(m_Docx, "宋体", 22, "现场勘查报告");
             word_insert_space(7, m_Docx);
-            word_insert_text(m_Docx, "宋体", 22, "【此处填写报告日期】");
+            word_insert_text(m_Docx, "宋体", 22, DateTime.Now.ToString("yyyy年MM月dd日"));
             word_insert_space(7, m_Docx);
 
 
@@ -154,12 +157,11 @@ namespace FromConvert_VS.Output
             CT_TcPr ctPr = cttc.AddNewTcPr();
             ctPr.gridSpan = new CT_DecimalNumber();
             ctPr.gridSpan.val = "2";
-            cttc.GetPList()[0].AddNewR().AddNewT().Value = "SITE [序号]";
+            cttc.GetPList()[0].AddNewR().AddNewT().Value = "SITE: " + bean.MarkerId;
 
 
             System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(photoPathName);
             System.IO.FileInfo[] files = dir.GetFiles();
-
             foreach (System.IO.FileInfo file in files)
             {
                 FileStream gfs = new FileStream(photoPathName + "\\" + file.Name, FileMode.Open, FileAccess.Read);
