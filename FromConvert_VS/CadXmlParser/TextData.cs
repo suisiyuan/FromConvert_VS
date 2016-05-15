@@ -12,6 +12,7 @@ namespace FromConvert_VS.CadXmlParser
         private String layer;
         private Coordinate coordinate;
         private String content;
+        private String type;
 
         public TextData()
         {
@@ -55,6 +56,19 @@ namespace FromConvert_VS.CadXmlParser
             set
             {
                 content = value;
+            }
+        }
+
+        public string Type
+        {
+            get
+            {
+                return type;
+            }
+
+            set
+            {
+                type = value;
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using FromConvert_VS.DigitalMapParser.Utils;
 
@@ -58,7 +59,7 @@ namespace FromConvert_VS.DigitalMapParser.Parser
         private void initTextPoint()
         {
             foreach (string path in dataFilePathList)
-            {
+            {                
                 StreamReader sr = new StreamReader(path, Encoding.Default);
                 //获取每一行的数据---如果是匹配的---提取出来一个TextPoint
                 String lineStr;
@@ -67,8 +68,38 @@ namespace FromConvert_VS.DigitalMapParser.Parser
                     String[] args = lineStr.Split(' ');
                     if (args.Length > 2)
                     {
-                        TextPoint textPoint = new TextPoint(Convert.ToDouble(args[1]),
-                            Convert.ToDouble(args[0]), args[2]);
+                        FileInfo file = new FileInfo(path);
+                        TextPoint textPoint;
+
+
+                        if (file.Name.Contains("里程"))
+                        {
+                            Boolean isNumber = true;
+                            try
+                            {
+                                Convert.ToInt32(args[2]);
+                                textPoint = new TextPoint(Convert.ToDouble(args[1]), Convert.ToDouble(args[0]), args[2], "");
+                            }
+                            catch
+                            {
+                                textPoint = new TextPoint(Convert.ToDouble(args[1]), Convert.ToDouble(args[0]), args[2], "mark");
+                            }
+                            
+                        }
+                            
+                        else if (file.Name.Contains("车站"))
+                        {
+                            textPoint = new TextPoint(Convert.ToDouble(args[1]), Convert.ToDouble(args[0]), args[2], "station");
+                        }
+                            
+                        else if (file.Name.Contains("隧道"))
+                        {
+                            textPoint = new TextPoint(Convert.ToDouble(args[1]), Convert.ToDouble(args[0]), args[2], "tunnel");
+                        }
+                        else
+                        {
+                            textPoint = new TextPoint(Convert.ToDouble(args[1]), Convert.ToDouble(args[0]), args[2], "");
+                        }
                         textPointList.Add(textPoint);
                     }
                 }

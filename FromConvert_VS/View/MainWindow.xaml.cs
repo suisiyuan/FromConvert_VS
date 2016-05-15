@@ -25,7 +25,6 @@ namespace FromConvert_VS.View
         private CadXmlFile cadXmlFile;
         private DatabaseFile databaseFile;
 
-
         private String projectPath_output = "", wordPath_output = "", excelPath_output = "";
         private String projectName_output = "", projectFolder_output = "";
         private DatabaseFile databaseFile_output;
@@ -51,7 +50,7 @@ namespace FromConvert_VS.View
                 OpenFileDialog dialog = new OpenFileDialog();
                 dialog.InitialDirectory = "d:\\";
                 dialog.RestoreDirectory = true;
-                dialog.Filter = "xml文件 (*.xml) | *.xml";
+                dialog.Filter = "Xml文件 (*.xml) | *.xml";
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     MapPath_textBox.Text = dialog.FileName;
@@ -85,7 +84,7 @@ namespace FromConvert_VS.View
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.InitialDirectory = "d:\\";
             dialog.RestoreDirectory = true;
-            dialog.Filter = "excel文件 | *.xlsx";
+            dialog.Filter = "Excel文件 | *.xlsx";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ExcelPath_textBox.Clear();
@@ -103,7 +102,7 @@ namespace FromConvert_VS.View
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.InitialDirectory = "d:\\";
             dialog.RestoreDirectory = true;
-            dialog.Filter = "kml文件 | *.kml";
+            dialog.Filter = "Kml文件 | *.kml";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 kmlPath = dialog.FileName;
@@ -131,7 +130,7 @@ namespace FromConvert_VS.View
             else
             {
                 SaveFileDialog dialog = new SaveFileDialog(); ;
-                dialog.Filter = "db文件 (*.db)|*.db";
+                dialog.Filter = "工程文件 (*.db)|*.db";
                 dialog.FilterIndex = 1;
                 dialog.InitialDirectory = "d:\\";
                 dialog.RestoreDirectory = true;
@@ -139,45 +138,34 @@ namespace FromConvert_VS.View
                 if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
                     outputPath = dialog.FileName;
-                }
-
-                databaseFile = new DatabaseFile(outputPath);
-                databaseFile.InitDbFile();
-                SaveProject();
+                    databaseFile = new DatabaseFile(outputPath);
+                    databaseFile.InitDbFile();
+                    //CAD文件
+                    if (MapPath_comboBox.SelectedIndex == 0)
+                    {
+                        databaseFile.WriteProjectInfo(0, projectName);
+                        databaseFile.WriteCadMap(cadXmlFile);
+                    }
+                    //数字地图
+                    else if (MapPath_comboBox.SelectedIndex == 1)
+                    {
+                        databaseFile.WriteProjectInfo(1, projectName);
+                        databaseFile.WriteDigitalMap(prjItem);
+                    }
+                    //如果有kml文件
+                    if (kmlFile != null)
+                    {
+                        databaseFile.WriteKml(kmlFile);
+                    }
+                    //如果有excel文件
+                    if (excelFile != null)
+                    {
+                        databaseFile.WriteExcel(excelFile);
+                    }
+                    System.Windows.MessageBox.Show("文件生成成功", "提示");
+                }        
             }
         }
-
-        private void SaveProject()
-        {
-            //CAD文件
-            if (MapPath_comboBox.SelectedIndex == 0)
-            {
-                databaseFile.WriteProjectInfo(0, projectName);
-                databaseFile.WriteCadMap(cadXmlFile);
-            }
-            //数字地图
-            else if (MapPath_comboBox.SelectedIndex == 1)
-            {
-                databaseFile.WriteProjectInfo(1, projectName);
-                databaseFile.WriteDigitalMap(prjItem);
-            }
-
-            //如果有kml文件
-            if (kmlFile != null)
-            {
-                databaseFile.WriteKml(kmlFile);
-            }
-
-            //如果有excel文件
-            if (excelFile != null)
-            {
-                databaseFile.WriteExcel(excelFile);
-            }
-
-            System.Windows.MessageBox.Show("文件生成成功", "提示");
-        }
-
-
 
 
         private void LoadProject_Click(object sender, RoutedEventArgs e)
@@ -185,7 +173,7 @@ namespace FromConvert_VS.View
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.InitialDirectory = "d:\\";
             dialog.RestoreDirectory = true;
-            dialog.Filter = "db文件 (*.db) | *.db";
+            dialog.Filter = "工程文件 (*.db) | *.db";
             if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 string delimStr = "\\";
@@ -216,7 +204,7 @@ namespace FromConvert_VS.View
         private void ExportWord_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "word文件 (*.docx)|*.docx";
+            dialog.Filter = "Word文件 (*.docx)|*.docx";
             dialog.FilterIndex = 1;
             dialog.InitialDirectory = projectFolder_output;
             dialog.RestoreDirectory = true;
@@ -256,7 +244,7 @@ namespace FromConvert_VS.View
         private void ExportExcel_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog(); ;
-            dialog.Filter = "excel文件 (*.xls)|*.xls";
+            dialog.Filter = "Excel文件 (*.xls)|*.xls";
             dialog.FilterIndex = 1;
             dialog.InitialDirectory = projectFolder_output;
             dialog.RestoreDirectory = true;
@@ -267,7 +255,5 @@ namespace FromConvert_VS.View
                 System.Windows.MessageBox.Show("Excel文件导出成功", "完成");
             }
         }
-
-
     }
 }

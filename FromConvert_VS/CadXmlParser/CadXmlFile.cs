@@ -145,6 +145,15 @@ namespace FromConvert_VS.CadXmlParser
                 textData.Coordinate.Longitude = Convert.ToDouble(Text.Attributes.GetNamedItem("longitude").InnerText);
                 textData.Coordinate.Latitude = Convert.ToDouble(Text.Attributes.GetNamedItem("latitude").InnerText);
                 textData.Content = Text.Attributes.GetNamedItem("value").InnerText.Replace("%%d", "°").Replace("'", "''");
+                try
+                {
+                    textData.Type = Text.Attributes.GetNamedItem("recognized").InnerText;
+                }
+                catch
+                {
+                    textData.Type = "";
+                }
+                
                 TextDataList.Add(textData);
             }
 

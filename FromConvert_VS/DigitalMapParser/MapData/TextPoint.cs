@@ -20,6 +20,7 @@ namespace FromConvert_VS.DigitalMapParser.MapData
          * 显示的数据
          */
         private string content;
+        private string type;
 
         /**
          * 构造方法
@@ -28,13 +29,14 @@ namespace FromConvert_VS.DigitalMapParser.MapData
          * @param latitude  大地纬度
          * @param content   文字内容
          */
-        public TextPoint(double longitude, double latitude, string content)
+        public TextPoint(double longitude, double latitude, string content, string type)
         {
             //进行坐标转换
             double[] BL = CoordinateConverter.UTMWGSXYtoBL(longitude, latitude);
             this.latitude = BL[0];
             this.longitude = BL[1];
             this.content = content;
+            this.type = type;
         }
 
         // 返回描述的文字
@@ -74,6 +76,11 @@ namespace FromConvert_VS.DigitalMapParser.MapData
         public string getContent()
         {
             return content;
+        }
+
+        public string getType()
+        {
+            return type;
         }
     }
 }

@@ -34,6 +34,7 @@ namespace FromConvert_VS.Database
 
         private SQLiteDataReader reader;
         private List<OutputData> outputDataList = new List<OutputData>();
+
         internal List<OutputData> OutputDataList
         {
             get
@@ -85,7 +86,7 @@ namespace FromConvert_VS.Database
             cmd.CommandText = "CREATE TABLE Poly(layer TEXT, id INTEGER, orderId INTEGER, longitude REAL, latitude REAL, name TEXT)";
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = "CREATE TABLE Text(layer TEXT, longitude REAL, latitude REAL, content TEXT)";
+            cmd.CommandText = "CREATE TABLE Text(layer TEXT, longitude REAL, latitude REAL, content TEXT, type TEXT)";
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = "CREATE TABLE P2DPoly(layer TEXT, id INTEGER, orderId INTEGER, longitude REAL, latitude REAL)";
@@ -151,7 +152,8 @@ namespace FromConvert_VS.Database
                                       + "'" + "" + "', "
                                       + "'" + textPoint.getLongitude() + "', "
                                       + "'" + textPoint.getLatitude() + "', "
-                                      + "'" + textPoint.getContent() + "'"
+                                      + "'" + textPoint.getContent() + "', "
+                                      + "'" + textPoint.getType() + "'"
                                       + ")";
                     cmd.ExecuteNonQuery();
                 }
@@ -254,7 +256,8 @@ namespace FromConvert_VS.Database
                                   + "'" + textData.Layer + "', "
                                   + "'" + textData.Coordinate.Longitude + "', "
                                   + "'" + textData.Coordinate.Latitude + "', "
-                                  + "'" + textData.Content + "'"
+                                  + "'" + textData.Content + "', "
+                                  + "'" + textData.Type + "'"
                                   + ")";
                     cmd.ExecuteNonQuery();
 
